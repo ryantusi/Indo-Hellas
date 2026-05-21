@@ -1,0 +1,3435 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>INDO HELLAS | General Marine Suppliers - World Wide</title>
+    <link rel="icon" type="image/png" href="logo.png" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Hanken+Grotesk:wght@300;400;600;700&display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            font-family: 'Hanken Grotesk', sans-serif;
+            background: #f0f4f8;
+            color: #0d1b2e;
+            overflow-x: hidden;
+            cursor: none
+        }
+
+        :root {
+            --navy: #0a1628;
+            --navy-mid: #0d2044;
+            --navy-light: #1a3560;
+            --blue-accent: #1e6fc8;
+            --blue-light: #4da3e8;
+            --blue-pale: #b8d9f5;
+            --blue-ghost: #d4eafc;
+            --off-white: #f0f4f8;
+            --white: #ffffff;
+            --text-primary: #0d1b2e;
+            --text-muted: #4a6080;
+            --text-light: #7a95b0;
+            --surface: #f0f4f8;
+            --surface-card: #ffffff;
+            --surface-subtle: #e4eef7;
+            --border: #c5d8ec;
+            --font-display: 'Montserrat', sans-serif;
+            --font-body: 'Hanken Grotesk', sans-serif;
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* CURSOR */
+        #cursor {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            background: var(--navy);
+            transition: width .3s, height .3s, background .2s
+        }
+
+        #cursor-ring {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            border: 1.5px solid rgba(13, 27, 46, 0.35);
+            transition: border-color .2s
+        }
+
+        body.on-dark #cursor {
+            background: #fff
+        }
+
+        body.on-dark #cursor-ring {
+            border-color: rgba(255, 255, 255, 0.5)
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-size: 24px;
+            line-height: 1;
+            vertical-align: middle
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 64px
+        }
+
+        @media(max-width:768px) {
+            .container {
+                padding: 0 20px
+            }
+        }
+
+        #progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            background: var(--blue-light);
+            z-index: 200;
+            width: 0%
+        }
+
+        /* NAVBAR */
+        #navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 18px 0;
+            transition: padding .4s var(--ease-out), background .4s, border-color .4s, box-shadow .4s;
+            border-bottom: 1px solid transparent
+        }
+
+        #navbar.scrolled {
+            padding: 10px 0;
+            background: rgba(240, 244, 248, 0.92);
+            backdrop-filter: blur(16px);
+            border-bottom-color: rgba(197, 216, 236, 0.4);
+            box-shadow: 0 1px 24px rgba(10, 22, 40, 0.08)
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center
+        }
+
+        .nav-logo-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none
+        }
+
+        .nav-logo-placeholder {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            overflow: hidden;
+            transition: border-color .4s, background .4s
+        }
+
+        #navbar.scrolled .nav-logo-placeholder {
+            background: var(--blue-ghost);
+            border-color: var(--blue-accent)
+        }
+
+        .nav-logo-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%
+        }
+
+        .nav-logo-text {
+            font-family: var(--font-display);
+            font-size: 17px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: #fff;
+            transition: color .4s
+        }
+
+        #navbar.scrolled .nav-logo-text {
+            color: var(--navy)
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            list-style: none
+        }
+
+        .nav-links a {
+            font-family: var(--font-body);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.78);
+            transition: color .3s;
+            position: relative
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 0;
+            height: 1.5px;
+            background: currentColor;
+            transition: width .3s var(--ease-out)
+        }
+
+        .nav-links a:hover {
+            color: #fff
+        }
+
+        .nav-links a:hover::after {
+            width: 100%
+        }
+
+        #navbar.scrolled .nav-links a {
+            color: var(--text-muted)
+        }
+
+        #navbar.scrolled .nav-links a:hover {
+            color: var(--navy)
+        }
+
+        .nav-cta {
+            font-family: var(--font-body);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            padding: 9px 22px;
+            border-radius: 6px;
+            border: none;
+            cursor: none;
+            background: #fff;
+            color: var(--navy);
+            transition: background .3s, color .3s, transform .2s
+        }
+
+        .nav-cta:hover {
+            background: var(--blue-ghost);
+            transform: translateY(-1px)
+        }
+
+        #navbar.scrolled .nav-cta {
+            background: var(--navy-mid);
+            color: #fff
+        }
+
+        #navbar.scrolled .nav-cta:hover {
+            background: var(--navy)
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: none;
+            background: none;
+            border: none;
+            padding: 4px;
+            z-index: 200
+        }
+
+        .hamburger span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: #fff;
+            border-radius: 2px;
+            transition: transform .4s var(--ease-out), opacity .3s, background .4s;
+            transform-origin: center
+        }
+
+        #navbar.scrolled .hamburger span {
+            background: var(--navy)
+        }
+
+        .hamburger.open span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg)
+        }
+
+        .hamburger.open span:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0)
+        }
+
+        .hamburger.open span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg)
+        }
+
+        #mobile-menu {
+            position: fixed;
+            inset: 0;
+            background: var(--navy);
+            z-index: 99;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 36px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .4s var(--ease-out)
+        }
+
+        #mobile-menu.open {
+            opacity: 1;
+            pointer-events: all
+        }
+
+        #mobile-menu a {
+            font-family: var(--font-display);
+            font-size: clamp(28px, 8vw, 48px);
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+            letter-spacing: -0.02em;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: transform .5s var(--ease-out), opacity .5s var(--ease-out), color .3s
+        }
+
+        #mobile-menu.open a {
+            transform: translateY(0);
+            opacity: 1
+        }
+
+        #mobile-menu.open a:nth-child(1) {
+            transition-delay: .05s
+        }
+
+        #mobile-menu.open a:nth-child(2) {
+            transition-delay: .10s
+        }
+
+        #mobile-menu.open a:nth-child(3) {
+            transition-delay: .15s
+        }
+
+        #mobile-menu.open a:nth-child(4) {
+            transition-delay: .20s
+        }
+
+        #mobile-menu.open a:nth-child(5) {
+            transition-delay: .25s
+        }
+
+        #mobile-menu.open a:nth-child(6) {
+            transition-delay: .30s
+        }
+
+        #mobile-menu a:hover {
+            color: var(--blue-pale)
+        }
+
+        @media(max-width:768px) {
+
+            .nav-links,
+            .nav-cta {
+                display: none
+            }
+
+            .hamburger {
+                display: flex
+            }
+        }
+
+        /* ── HERO ─────────────────────────────────────────────── */
+        #hero {
+            position: relative;
+            height: 100vh;
+            min-height: 620px;
+            overflow: hidden;
+            background: var(--navy)
+        }
+
+        #hero-video,
+        #hero-fallback {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.55
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(160deg, rgba(10, 22, 40, 0.6) 0%, rgba(10, 22, 40, 0.35) 40%, rgba(10, 22, 40, 0.88) 100%)
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-top: 10vh
+        }
+
+        /* Hero top row: headline left + logo right */
+        .hero-top-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+            margin-top: 10vh
+        }
+
+        @media(max-width:900px) {
+            .hero-top-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 24px
+            }
+        }
+
+        .hero-headline {
+            font-family: var(--font-display);
+            font-size: clamp(38px, 6vw, 74px);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -0.025em;
+            color: #fff;
+            max-width: 700px;
+            margin-bottom: 0;
+            opacity: 0
+        }
+
+        .hero-headline .accent {
+            color: var(--blue-pale)
+        }
+
+        /* Hero logo — right side, same visual height as headline */
+        .hero-logo-wrap {
+            flex-shrink: 0;
+            opacity: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+        .hero-logo-wrap img {
+            width: clamp(140px, 14vw, 220px);
+            height: clamp(140px, 14vw, 220px);
+            object-fit: contain;
+            filter: drop-shadow(0 8px 32px rgba(10, 22, 40, 0.5)) drop-shadow(0 0 60px rgba(184, 217, 245, 0.15));
+            border-radius: 50%;
+        }
+
+        /* Fallback circle shown if logo.png isn't available */
+        .hero-logo-placeholder {
+            width: clamp(140px, 14vw, 220px);
+            height: clamp(140px, 14vw, 220px);
+            border-radius: 50%;
+            border: 3px solid rgba(184, 217, 245, 0.35);
+            background: rgba(184, 217, 245, 0.07);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .hero-logo-placeholder span {
+            color: var(--blue-pale);
+            font-size: 48px
+        }
+
+        .hero-logo-placeholder p {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-family: var(--font-display);
+            font-weight: 700
+        }
+
+        @media(max-width:900px) {
+            .hero-logo-wrap {
+                display: none
+            }
+        }
+
+        .hero-sub-row {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 0;
+            opacity: 0;
+            flex-wrap: wrap
+        }
+
+        .hero-sub-box {
+            display: inline-flex;
+            align-items: center;
+            padding: 7px 20px;
+            font-family: var(--font-display);
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.18em;
+            text-transform: uppercase
+        }
+
+        .hero-sub-box.outline {
+            border: 1.5px solid rgba(184, 217, 245, 0.55);
+            color: var(--blue-pale);
+            background: transparent
+        }
+
+        .hero-sub-box.filled {
+            background: var(--blue-accent);
+            color: #fff;
+            border: 1.5px solid var(--blue-accent)
+        }
+
+        .hero-bottom {
+            margin-top: auto;
+            padding-bottom: 64px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            opacity: 0
+        }
+
+        @media(max-width:768px) {
+            .hero-bottom {
+                grid-template-columns: 1fr;
+                gap: 24px
+            }
+        }
+
+        .hero-stat {
+            border-top: 1px solid rgba(255, 255, 255, 0.18);
+            padding-top: 20px
+        }
+
+        .hero-stat h3 {
+            color: #fff;
+            font-family: var(--font-display);
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px
+        }
+
+        .hero-stat p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 13px;
+            line-height: 1.65;
+            max-width: 340px
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 25%;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            opacity: 0;
+            cursor: none
+        }
+
+        .scroll-indicator span {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-family: var(--font-body)
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.18);
+            position: relative;
+            overflow: hidden
+        }
+
+        .scroll-line::after {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.55);
+            animation: scrollDrop 1.8s ease-in-out infinite
+        }
+
+        @keyframes scrollDrop {
+            0% {
+                top: -100%
+            }
+
+            100% {
+                top: 100%
+            }
+        }
+
+        /* FAB */
+        .fab-container {
+            position: fixed;
+            bottom: 48px;
+            right: 48px;
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            gap: 16px
+        }
+
+        @media(max-width:1024px) {
+            .fab-container {
+                display: none
+            }
+        }
+
+        .fab {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            padding: 13px 18px;
+            border-radius: 9999px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+            cursor: none;
+            transition: background .3s, transform .3s var(--ease-out), box-shadow .3s;
+            text-decoration: none;
+            color: var(--navy)
+        }
+
+        .fab:hover {
+            background: var(--navy-mid);
+            color: #fff;
+            transform: translateX(-4px);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.22)
+        }
+
+        .fab-label {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            font-family: var(--font-body);
+            color: inherit
+        }
+
+        .fab-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: var(--navy-mid);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .3s, color .3s;
+            flex-shrink: 0
+        }
+
+        .fab:hover .fab-icon {
+            background: var(--blue-accent);
+            color: #fff
+        }
+
+        /* MODAL */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 22, 40, 0.75);
+            backdrop-filter: blur(8px);
+            z-index: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .35s var(--ease-out)
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: all
+        }
+
+        .modal-box {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 48px;
+            max-width: 560px;
+            width: 90%;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.22);
+            transform: translateY(24px) scale(0.97);
+            transition: transform .4s var(--ease-out);
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto
+        }
+
+        .modal-overlay.open .modal-box {
+            transform: translateY(0) scale(1)
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            background: var(--surface-subtle);
+            border: none;
+            border-radius: 50%;
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: none;
+            transition: background .2s;
+            flex-shrink: 0
+        }
+
+        .modal-close:hover {
+            background: var(--border)
+        }
+
+        .modal-title {
+            font-family: var(--font-display);
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 4px;
+            color: var(--navy)
+        }
+
+        .modal-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 28px
+        }
+
+        .modal-contact-item {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            margin-bottom: 18px
+        }
+
+        .modal-contact-icon {
+            width: 38px;
+            height: 38px;
+            background: var(--navy);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--blue-pale);
+            flex-shrink: 0
+        }
+
+        .modal-contact-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 3px
+        }
+
+        .modal-contact-value {
+            font-size: 13px;
+            line-height: 1.7;
+            color: var(--text-primary)
+        }
+
+        .modal-contact-value a {
+            color: var(--blue-accent);
+            text-decoration: none;
+            transition: color .2s
+        }
+
+        .modal-contact-value a:hover {
+            color: var(--navy)
+        }
+
+        .flyer-box {
+            background: var(--navy)
+        }
+
+        .flyer-box .modal-title {
+            color: #fff
+        }
+
+        .flyer-box .modal-subtitle {
+            color: rgba(255, 255, 255, 0.5)
+        }
+
+        .flyer-box .modal-close {
+            background: rgba(255, 255, 255, 0.1)
+        }
+
+        .flyer-box .modal-close:hover {
+            background: rgba(255, 255, 255, 0.18)
+        }
+
+        .flyer-box .modal-close .material-symbols-outlined {
+            color: #fff
+        }
+
+        .flyer-content {
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            padding: 28px;
+            text-align: center
+        }
+
+        .flyer-logo {
+            font-family: var(--font-display);
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--blue-pale);
+            margin-bottom: 4px;
+            letter-spacing: -0.02em
+        }
+
+        .flyer-tagline {
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.45);
+            margin-bottom: 20px
+        }
+
+        .flyer-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 16px 0
+        }
+
+        .flyer-services-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px 12px;
+            text-align: left;
+            margin-bottom: 20px
+        }
+
+        .flyer-service-item {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7)
+        }
+
+        .flyer-service-item .material-symbols-outlined {
+            font-size: 14px;
+            color: var(--blue-pale)
+        }
+
+        .flyer-certs {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.38);
+            letter-spacing: 0.04em
+        }
+
+        .flyer-download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            margin-top: 20px;
+            padding: 11px 26px;
+            background: var(--blue-accent);
+            color: #fff;
+            font-family: var(--font-body);
+            font-size: 13px;
+            font-weight: 700;
+            border-radius: 8px;
+            border: none;
+            cursor: none;
+            transition: opacity .2s
+        }
+
+        .flyer-download-btn:hover {
+            opacity: .85
+        }
+
+        /* CERT MODAL */
+        .cert-modal-box {
+            max-width: 700px
+        }
+
+        .cert-frame {
+            width: 100%;
+            aspect-ratio: 1.414;
+            background: var(--surface-subtle);
+            border: 2px dashed var(--border);
+            border-radius: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            margin-top: 20px;
+            overflow: hidden;
+            position: relative
+        }
+
+        .cert-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: none
+        }
+
+        .cert-frame-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px
+        }
+
+        .cert-frame-placeholder .material-symbols-outlined {
+            font-size: 52px;
+            color: var(--border)
+        }
+
+        .cert-frame-placeholder p {
+            font-size: 13px;
+            color: var(--text-light);
+            text-align: center;
+            max-width: 260px;
+            line-height: 1.5
+        }
+
+        .cert-frame-placeholder small {
+            font-size: 11px;
+            color: var(--border)
+        }
+
+        /* SECTION SHARED */
+        section {
+            position: relative
+        }
+
+        .section-tag {
+            font-family: var(--font-body);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+            display: block
+        }
+
+        /* ABOUT */
+        #about {
+            padding: 120px 0 0;
+            background: var(--off-white)
+        }
+
+        .about-section-header {
+            text-align: center;
+            max-width: 760px;
+            margin: 0 auto 72px
+        }
+
+        .about-section-tag {
+            color: var(--blue-accent)
+        }
+
+        .about-section-title {
+            font-family: var(--font-display);
+            font-size: clamp(32px, 4vw, 52px);
+            font-weight: 800;
+            letter-spacing: -0.025em;
+            color: var(--navy);
+            margin-bottom: 18px;
+            line-height: 1.08
+        }
+
+        .about-section-lead {
+            color: var(--text-muted);
+            font-size: 17px;
+            line-height: 1.7
+        }
+
+        .about-tabs {
+            display: flex;
+            gap: 0;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 72px
+        }
+
+        .about-tab {
+            font-family: var(--font-display);
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            padding: 14px 32px;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            cursor: none;
+            color: var(--text-light);
+            transition: color .3s, border-color .3s
+        }
+
+        .about-tab.active {
+            color: var(--blue-accent);
+            border-bottom-color: var(--blue-accent)
+        }
+
+        .about-tab:hover {
+            color: var(--navy)
+        }
+
+        .about-panel {
+            display: none
+        }
+
+        .about-panel.active {
+            display: block
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 72px;
+            align-items: center;
+            margin-bottom: 72px
+        }
+
+        @media(max-width:1024px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 40px
+            }
+        }
+
+        .about-sub-tag {
+            color: var(--blue-accent)
+        }
+
+        .about-sub-headline {
+            font-family: var(--font-display);
+            font-size: clamp(22px, 2.5vw, 32px);
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.01em;
+            margin-bottom: 18px;
+            color: var(--navy)
+        }
+
+        .about-body {
+            color: var(--text-muted);
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 20px
+        }
+
+        .about-feature {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            margin-bottom: 20px
+        }
+
+        .feature-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: var(--navy);
+            color: var(--blue-pale);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0
+        }
+
+        .feature-title {
+            font-family: var(--font-display);
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--navy)
+        }
+
+        .feature-desc {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.6
+        }
+
+        .about-images {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px
+        }
+
+        .about-img {
+            border-radius: 18px;
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            box-shadow: 0 20px 60px rgba(10, 22, 40, 0.14)
+        }
+
+        .about-img:first-child {
+            margin-top: 48px
+        }
+
+        .journey-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 72px;
+            align-items: start;
+            margin-bottom: 72px
+        }
+
+        @media(max-width:1024px) {
+            .journey-layout {
+                grid-template-columns: 1fr;
+                gap: 40px
+            }
+        }
+
+        .journey-image-wrap {
+            position: relative
+        }
+
+        .journey-img {
+            width: 100%;
+            height: 420px;
+            object-fit: cover;
+            border-radius: 20px;
+            box-shadow: 0 24px 64px rgba(10, 22, 40, 0.16)
+        }
+
+        .journey-badge {
+            position: absolute;
+            bottom: -20px;
+            left: 24px;
+            background: var(--navy);
+            color: #fff;
+            border-radius: 14px;
+            padding: 20px 28px;
+            box-shadow: 0 16px 40px rgba(10, 22, 40, 0.22)
+        }
+
+        .journey-badge-num {
+            font-family: var(--font-display);
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--blue-pale);
+            line-height: 1
+        }
+
+        .journey-badge-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 4px
+        }
+
+        .journey-milestones {
+            display: flex;
+            flex-direction: column;
+            gap: 0
+        }
+
+        .milestone {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            padding: 24px 0;
+            border-bottom: 1px solid var(--border)
+        }
+
+        .milestone:last-child {
+            border-bottom: none
+        }
+
+        .milestone-year {
+            font-family: var(--font-display);
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--blue-accent);
+            min-width: 48px;
+            padding-top: 2px
+        }
+
+        .milestone-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--blue-accent);
+            margin-top: 6px;
+            flex-shrink: 0
+        }
+
+        .milestone-text {
+            font-size: 15px;
+            line-height: 1.6;
+            color: var(--text-muted)
+        }
+
+        .milestone-text strong {
+            color: var(--navy);
+            display: block;
+            margin-bottom: 2px
+        }
+
+        .commitment-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            margin-bottom: 72px
+        }
+
+        @media(max-width:1024px) {
+            .commitment-layout {
+                grid-template-columns: 1fr;
+                gap: 32px
+            }
+        }
+
+        .commitment-intro {
+            color: var(--text-muted);
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 28px
+        }
+
+        .commitment-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 28px
+        }
+
+        .commitment-item {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start
+        }
+
+        .commitment-check {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: var(--blue-ghost);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0
+        }
+
+        .commitment-check .material-symbols-outlined {
+            font-size: 16px;
+            color: var(--blue-accent)
+        }
+
+        .commitment-item-text {
+            font-size: 15px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            padding-top: 3px
+        }
+
+        .commitment-item-text strong {
+            color: var(--navy)
+        }
+
+        .commitment-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 16px
+        }
+
+        .commitment-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid var(--border);
+            transition: transform .3s var(--ease-out), box-shadow .3s
+        }
+
+        .commitment-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(10, 22, 40, 0.1)
+        }
+
+        .commitment-card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--navy);
+            color: var(--blue-pale);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px
+        }
+
+        .commitment-card-title {
+            font-family: var(--font-display);
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 6px
+        }
+
+        .commitment-card-text {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.6
+        }
+
+        .about-counter-strip {
+            background: var(--navy);
+            padding: 60px 0
+        }
+
+        .counter-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0
+        }
+
+        @media(max-width:768px) {
+            .counter-grid {
+                grid-template-columns: repeat(2, 1fr)
+            }
+        }
+
+        .counter-item {
+            text-align: center;
+            padding: 32px 24px;
+            position: relative
+        }
+
+        .counter-item+.counter-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 48px;
+            width: 1px;
+            background: rgba(255, 255, 255, 0.12)
+        }
+
+        .counter-num {
+            font-family: var(--font-display);
+            font-size: clamp(36px, 5vw, 56px);
+            font-weight: 800;
+            color: var(--blue-pale);
+            line-height: 1;
+            margin-bottom: 8px
+        }
+
+        .counter-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.55);
+            letter-spacing: 0.06em;
+            text-transform: uppercase
+        }
+
+        /* SERVICES */
+        #services {
+            padding: 120px 0;
+            background: var(--navy);
+            color: #fff;
+            overflow: hidden
+        }
+
+        .services-layout {
+            display: flex;
+            gap: 60px;
+            align-items: stretch
+        }
+
+        @media(max-width:1024px) {
+            .services-layout {
+                flex-direction: column
+            }
+        }
+
+        .services-visual {
+            flex: 1;
+            position: relative;
+            min-height: 500px;
+            border-radius: 22px;
+            overflow: hidden
+        }
+
+        .carousel-slide {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity .7s var(--ease-out), transform .7s var(--ease-out);
+            transform: scale(1.04)
+        }
+
+        .carousel-slide.active {
+            opacity: 1;
+            transform: scale(1)
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover
+        }
+
+        .services-visual-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(10, 22, 40, 0.88) 0%, rgba(10, 22, 40, 0.18) 55%, transparent 100%);
+            z-index: 2
+        }
+
+        .services-visual-label {
+            position: absolute;
+            bottom: 36px;
+            left: 36px;
+            z-index: 3
+        }
+
+        .services-visual-label h3 {
+            font-family: var(--font-display);
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 4px
+        }
+
+        .services-visual-label p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 13px
+        }
+
+        .carousel-dots {
+            position: absolute;
+            bottom: 14px;
+            right: 18px;
+            z-index: 3;
+            display: flex;
+            gap: 6px
+        }
+
+        .carousel-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            cursor: none;
+            transition: background .3s, width .3s;
+            padding: 0
+        }
+
+        .carousel-dot.active {
+            background: var(--blue-pale);
+            width: 18px;
+            border-radius: 4px
+        }
+
+        .services-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start
+        }
+
+        .services-header {
+            margin-bottom: 24px
+        }
+
+        .services-tag {
+            color: var(--blue-pale)
+        }
+
+        .services-headline {
+            font-family: var(--font-display);
+            font-size: clamp(22px, 2.5vw, 32px);
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            margin-bottom: 10px
+        }
+
+        .services-intro {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+            line-height: 1.7
+        }
+
+        .service-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-bottom: 22px
+        }
+
+        .service-tab {
+            font-family: var(--font-body);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            padding: 5px 13px;
+            border-radius: 9999px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: transparent;
+            color: rgba(255, 255, 255, 0.5);
+            cursor: none;
+            transition: all .25s
+        }
+
+        .service-tab.active,
+        .service-tab:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: #fff
+        }
+
+        .service-tab.active {
+            border-color: var(--blue-pale);
+            color: var(--blue-pale)
+        }
+
+        .service-detail {
+            display: none;
+            flex-direction: column;
+            gap: 14px
+        }
+
+        .service-detail.active {
+            display: flex
+        }
+
+        .service-detail-header {
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+        .service-detail-icon {
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.07);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0
+        }
+
+        .service-detail-icon .material-symbols-outlined {
+            font-size: 24px;
+            color: var(--blue-pale)
+        }
+
+        .service-detail h4 {
+            font-family: var(--font-display);
+            font-size: 17px;
+            font-weight: 700
+        }
+
+        .service-detail-desc {
+            color: rgba(255, 255, 255, 0.58);
+            font-size: 14px;
+            line-height: 1.75
+        }
+
+        .service-categories {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 7px 14px
+        }
+
+        .service-cat-item {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.58)
+        }
+
+        .service-cat-item::before {
+            content: '';
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--blue-pale);
+            flex-shrink: 0
+        }
+
+        /* WHY US */
+        #why-us {
+            padding: 120px 0;
+            background: var(--off-white)
+        }
+
+        .why-header {
+            text-align: center;
+            max-width: 640px;
+            margin: 0 auto 60px
+        }
+
+        .why-headline {
+            font-family: var(--font-display);
+            font-size: clamp(26px, 3vw, 38px);
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            margin-bottom: 14px;
+            color: var(--navy)
+        }
+
+        .why-subhead {
+            color: var(--text-muted);
+            font-size: 16px;
+            line-height: 1.6
+        }
+
+        .bento-row1 {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 18px;
+            margin-bottom: 18px
+        }
+
+        .bento-row2 {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 18px
+        }
+
+        @media(max-width:900px) {
+
+            .bento-row1,
+            .bento-row2 {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .bento-card {
+            background: var(--white);
+            border-radius: 22px;
+            padding: 40px;
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(10, 22, 40, 0.05);
+            transition: transform .3s var(--ease-out), box-shadow .3s
+        }
+
+        .bento-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 60px rgba(10, 22, 40, 0.1)
+        }
+
+        .bento-icon-wrap {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            background: var(--surface-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 22px
+        }
+
+        .bento-icon-wrap .material-symbols-outlined {
+            font-size: 26px;
+            color: var(--navy)
+        }
+
+        .bento-title {
+            font-family: var(--font-display);
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--navy)
+        }
+
+        .bento-body {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.65
+        }
+
+        .bento-tags {
+            display: flex;
+            gap: 9px;
+            flex-wrap: wrap;
+            margin-top: 24px
+        }
+
+        .bento-tag {
+            padding: 5px 14px;
+            background: var(--surface-subtle);
+            border-radius: 9999px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--navy-light)
+        }
+
+        .bento-large {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between
+        }
+
+        .bento-dark {
+            background: var(--navy);
+            border-color: transparent;
+            color: #fff;
+            text-align: center
+        }
+
+        .bento-dark .bento-title {
+            color: #fff
+        }
+
+        .bento-dark .bento-body {
+            color: rgba(255, 255, 255, 0.6)
+        }
+
+        .bento-dark .material-symbols-outlined {
+            font-size: 56px;
+            color: var(--blue-pale);
+            margin-bottom: 16px;
+            display: block
+        }
+
+        .bento-muted {
+            background: var(--surface-subtle);
+            border-color: transparent
+        }
+
+        .bento-quality {
+            background: var(--navy-light);
+            border-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 36px
+        }
+
+        .bento-quality .bento-title {
+            color: #fff
+        }
+
+        .bento-quality .bento-body {
+            color: rgba(255, 255, 255, 0.65)
+        }
+
+        .bento-quality-icon {
+            flex-shrink: 0
+        }
+
+        .bento-quality-icon .material-symbols-outlined {
+            font-size: 80px;
+            color: rgba(255, 255, 255, 0.12)
+        }
+
+        @media(max-width:900px) {
+            .bento-quality {
+                flex-direction: column;
+                gap: 16px
+            }
+        }
+
+        /* NETWORK */
+        #network {
+            padding: 120px 0;
+            background: var(--navy-mid);
+            color: #fff
+        }
+
+        .network-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: start
+        }
+
+        @media(max-width:1024px) {
+            .network-grid {
+                grid-template-columns: 1fr;
+                gap: 48px
+            }
+        }
+
+        .network-tag {
+            color: var(--blue-pale)
+        }
+
+        .network-headline {
+            font-family: var(--font-display);
+            font-size: clamp(28px, 4vw, 46px);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 18px;
+            line-height: 1.1
+        }
+
+        .network-body {
+            color: rgba(255, 255, 255, 0.56);
+            font-size: 16px;
+            line-height: 1.65;
+            margin-bottom: 44px
+        }
+
+        .accordion-item {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 18px 0;
+            cursor: none
+        }
+
+        .accordion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: color .3s
+        }
+
+        .accordion-header:hover {
+            color: var(--blue-pale)
+        }
+
+        .accordion-title {
+            font-family: var(--font-display);
+            font-size: 18px;
+            font-weight: 700
+        }
+
+        .accordion-icon {
+            transition: transform .4s var(--ease-out);
+            font-size: 20px
+        }
+
+        .accordion-item.open .accordion-icon {
+            transform: rotate(45deg)
+        }
+
+        .accordion-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height .5s var(--ease-out), padding .3s
+        }
+
+        .accordion-item.open .accordion-body {
+            max-height: 400px;
+            padding-top: 12px
+        }
+
+        .accordion-country-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 0;
+            padding-top: 4px
+        }
+
+        .accordion-country-list span {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.52);
+            line-height: 1.8;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-right: 14px
+        }
+
+        .accordion-country-list span::before {
+            content: '';
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: var(--blue-pale);
+            flex-shrink: 0
+        }
+
+        .map-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 22px;
+            padding: 28px;
+            overflow: hidden
+        }
+
+        .map-visual {
+            aspect-ratio: 1;
+            background: var(--navy);
+            border-radius: 14px;
+            position: relative;
+            overflow: hidden
+        }
+
+        .map-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.2;
+            filter: grayscale(1)
+        }
+
+        .map-dots {
+            position: absolute;
+            inset: 0
+        }
+
+        .map-dot {
+            position: absolute;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--blue-pale);
+            transform: translate(-50%, -50%)
+        }
+
+        .map-dot::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            background: var(--blue-pale);
+            opacity: 0.3;
+            animation: ping 2s ease-in-out infinite
+        }
+
+        .map-dot:nth-child(2)::before {
+            animation-delay: .4s
+        }
+
+        .map-dot:nth-child(3)::before {
+            animation-delay: .8s
+        }
+
+        .map-dot:nth-child(4)::before {
+            animation-delay: 1.2s
+        }
+
+        .map-dot:nth-child(5)::before {
+            animation-delay: .2s
+        }
+
+        .map-dot:nth-child(6)::before {
+            animation-delay: .6s
+        }
+
+        .map-dot:nth-child(7)::before {
+            animation-delay: 1.0s
+        }
+
+        .map-dot:nth-child(8)::before {
+            animation-delay: 1.4s
+        }
+
+        .map-dot-tooltip {
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(10, 22, 40, 0.92);
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .2s;
+            font-family: var(--font-body);
+            letter-spacing: 0.04em
+        }
+
+        .map-dot:hover .map-dot-tooltip {
+            opacity: 1
+        }
+
+        @keyframes ping {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: .3
+            }
+
+            50% {
+                transform: scale(2.5);
+                opacity: 0
+            }
+        }
+
+        /* ── CERTIFICATES ─────────────────────────────────────── */
+        #certificates {
+            padding: 0;
+            background: var(--off-white);
+            border-top: 1px solid var(--border)
+        }
+
+        .cert-header-wrap {
+            padding: 80px 0 56px;
+            text-align: center
+        }
+
+        .cert-section-tag {
+            color: var(--blue-accent)
+        }
+
+        .cert-title {
+            font-family: var(--font-display);
+            font-size: clamp(28px, 3.5vw, 44px);
+            font-weight: 800;
+            letter-spacing: -0.025em;
+            color: var(--navy);
+            margin-bottom: 14px;
+            line-height: 1.1
+        }
+
+        .cert-tagline {
+            font-family: var(--font-display);
+            font-size: 16px;
+            font-style: italic;
+            color: var(--blue-accent);
+            margin-bottom: 16px
+        }
+
+        .cert-desc {
+            color: var(--text-muted);
+            font-size: 15px;
+            line-height: 1.75;
+            max-width: 620px;
+            margin: 0 auto
+        }
+
+        .marquee-border {
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 28px 0;
+            overflow: hidden;
+            background: var(--white)
+        }
+
+        .marquee-wrapper {
+            display: flex;
+            overflow: hidden
+        }
+
+        .marquee-track {
+            display: flex;
+            animation: marquee 32s linear infinite;
+            white-space: nowrap
+        }
+
+        .marquee-track:hover {
+            animation-play-state: paused
+        }
+
+        @keyframes marquee {
+            0% {
+                transform: translateX(0)
+            }
+
+            100% {
+                transform: translateX(-50%)
+            }
+        }
+
+        .marquee-item {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 200px;
+            flex-shrink: 0;
+            padding: 0 28px;
+            filter: grayscale(1);
+            opacity: 0.42;
+            transition: filter .3s, opacity .3s, transform .25s;
+            cursor: none;
+            position: relative
+        }
+
+        .marquee-item:hover {
+            filter: grayscale(0);
+            opacity: 1;
+            transform: scale(1.1)
+        }
+
+        .marquee-item span {
+            font-family: var(--font-display);
+            font-size: 17px;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            color: var(--navy);
+            pointer-events: none
+        }
+
+        .marquee-item-divider {
+            width: 1px;
+            height: 28px;
+            background: var(--border);
+            flex-shrink: 0;
+            opacity: 0.5
+        }
+
+        /* CONTACT */
+        #contact {
+            padding: 120px 0;
+            background: var(--off-white)
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px
+        }
+
+        @media(max-width:1024px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 48px
+            }
+        }
+
+        .contact-headline {
+            font-family: var(--font-display);
+            font-size: clamp(26px, 3vw, 38px);
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            margin-bottom: 14px;
+            color: var(--navy)
+        }
+
+        .contact-subhead {
+            color: var(--text-muted);
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 44px
+        }
+
+        .contact-info-item {
+            display: flex;
+            gap: 18px;
+            align-items: flex-start;
+            margin-bottom: 24px
+        }
+
+        .contact-icon {
+            width: 42px;
+            height: 42px;
+            background: var(--navy);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--blue-pale);
+            flex-shrink: 0
+        }
+
+        .contact-info-label {
+            font-weight: 700;
+            font-size: 13px;
+            margin-bottom: 3px;
+            color: var(--navy)
+        }
+
+        .contact-info-value {
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 1.7
+        }
+
+        .contact-link {
+            color: inherit;
+            text-decoration: none;
+            transition: color .25s
+        }
+
+        .contact-link:hover {
+            color: var(--blue-light)
+        }
+
+        .contact-emails {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3px 20px
+        }
+
+        .map-placeholder {
+            border-radius: 20px;
+            overflow: hidden;
+            height: 200px;
+            background: var(--surface-subtle);
+            position: relative;
+            border: 1px solid var(--border);
+            margin-top: 28px
+        }
+
+        .map-placeholder img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.45
+        }
+
+        .map-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--navy);
+            color: #fff;
+            font-weight: 700;
+            font-size: 12px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            white-space: nowrap;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: background .2s, transform .2s
+        }
+
+        .map-btn:hover {
+            background: var(--navy-light);
+            transform: translate(-50%, -50%) scale(1.04)
+        }
+
+        .contact-form-card {
+            background: var(--white);
+            border-radius: 22px;
+            padding: 44px;
+            box-shadow: 0 20px 60px rgba(10, 22, 40, 0.08);
+            border: 1px solid var(--border)
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin-bottom: 18px
+        }
+
+        @media(max-width:640px) {
+            .form-row {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .form-group {
+            margin-bottom: 18px
+        }
+
+        .form-label {
+            display: block;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 7px
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            background: var(--off-white);
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            padding: 13px 15px;
+            font-family: var(--font-body);
+            font-size: 14px;
+            color: var(--text-primary);
+            outline: none;
+            transition: border-color .3s, box-shadow .3s;
+            -webkit-appearance: none;
+            cursor: none
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            border-color: var(--blue-accent);
+            box-shadow: 0 0 0 3px rgba(30, 111, 200, 0.1)
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 310px
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 15px;
+            background: var(--navy);
+            color: #fff;
+            font-family: var(--font-body);
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            border: none;
+            border-radius: 10px;
+            cursor: none;
+            transition: background .3s, transform .2s
+        }
+
+        .form-submit:hover {
+            background: var(--navy-light);
+            transform: translateY(-2px)
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--navy);
+            color: rgba(255, 255, 255, 0.55);
+            border-top: 1px solid rgba(255, 255, 255, 0.06)
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            gap: 40px;
+            padding: 80px 0 56px
+        }
+
+        @media(max-width:1024px) {
+            .footer-grid {
+                grid-template-columns: 1fr 1fr
+            }
+        }
+
+        @media(max-width:640px) {
+            .footer-grid {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .footer-logo-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px
+        }
+
+        .footer-logo-img {
+            margin-top: 5%;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            object-fit: cover
+        }
+
+        .footer-logo {
+            font-family: var(--font-display);
+            font-size: 17px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.02em
+        }
+
+        .footer-tagline {
+            font-size: 13px;
+            line-height: 1.65;
+            opacity: .5;
+            max-width: 250px
+        }
+
+        .footer-col-title {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #fff;
+            margin-bottom: 18px;
+            display: block
+        }
+
+        .footer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px
+        }
+
+        .footer-links a {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.45);
+            text-decoration: none;
+            transition: color .3s
+        }
+
+        .footer-links a:hover {
+            color: #fff
+        }
+
+        .footer-ports {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px 14px
+        }
+
+        .footer-ports span {
+            font-size: 12px;
+            opacity: .48
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 36px 0;
+            text-align: center
+        }
+
+        .footer-quote {
+            font-family: var(--font-display);
+            font-size: 14px;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 10px
+        }
+
+        .footer-copy {
+            font-size: 11px;
+            opacity: .3
+        }
+
+        /* ANIMATION HELPERS */
+        .reveal {
+            opacity: 0;
+            transform: translateY(32px)
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-40px)
+        }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(40px)
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="cursor"></div>
+    <div id="cursor-ring"></div>
+    <div id="progress"></div>
+
+    <!-- CONTACT MODAL -->
+    <div class="modal-overlay" id="contact-modal">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeModal('contact-modal')"><span class="material-symbols-outlined"
+                    style="font-size:17px">close</span></button>
+            <div class="modal-title">Contact Us</div>
+            <div class="modal-subtitle">Indo Hellas — General Marine Suppliers · World Wide</div>
+            <div class="modal-contact-item">
+                <div class="modal-contact-icon"><span class="material-symbols-outlined">location_on</span></div>
+                <div>
+                    <div class="modal-contact-label">Office Address</div>
+                    <div class="modal-contact-value">No. 95, Linghi Chetty Street,<br>1st Floor, Suite No. 7,
+                        Mannady,<br>Chennai – 600 001, India</div>
+                </div>
+            </div>
+            <div class="modal-contact-item">
+                <div class="modal-contact-icon"><span class="material-symbols-outlined">call</span></div>
+                <div>
+                    <div class="modal-contact-label">Phone</div>
+                    <div class="modal-contact-value">
+                        <a href="tel:+914442167484">+91 444 216 7484</a><br>
+                        <a href="tel:+914442167485">+91 444 216 7485</a>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-contact-item">
+                <div class="modal-contact-icon"><span class="material-symbols-outlined">alternate_email</span></div>
+                <div>
+                    <div class="modal-contact-label">Email</div>
+                    <div class="modal-contact-value">
+                        <a href="mailto:technical@indohellas.in">technical@indohellas.in</a><br>
+                        <a href="mailto:indohellas@indohellas.in">indohellas@indohellas.in</a><br>
+                        <a href="mailto:supply@indohellas.in">supply@indohellas.in</a><br>
+                        <a href="mailto:info@indohellas.in">info@indohellas.in</a><br>
+                        <a href="mailto:accounts@indohellas.in">accounts@indohellas.in</a><br>
+                        <a href="mailto:indohellas@gmail.com">indohellas@gmail.com</a><br>
+                        <a href="mailto:supplyindohellas@gmail.com">supplyindohellas@gmail.com</a>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-contact-item">
+                <div class="modal-contact-icon"><span class="material-symbols-outlined">language</span></div>
+                <div>
+                    <div class="modal-contact-label">Website</div>
+                    <div class="modal-contact-value">
+                        <a href="https://www.indohellasindia.com" target="_blank">www.indohellasindia.com</a><br>
+                        <a href="https://www.indohellas.in" target="_blank">www.indohellas.in</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FLYER MODAL -->
+    <div class="modal-overlay" id="flyer-modal">
+        <div class="modal-box flyer-box">
+            <button class="modal-close" onclick="closeModal('flyer-modal')"><span class="material-symbols-outlined"
+                    style="font-size:17px">close</span></button>
+            <div class="modal-title">Company Flyer</div>
+            <div class="modal-subtitle">Indo Hellas — General Marine Suppliers</div>
+            <div class="flyer-content">
+                <div class="flyer-logo">INDO HELLAS</div>
+                <div class="flyer-tagline">General Marine Suppliers · Est. 1996 · Chennai</div>
+                <div class="flyer-divider"></div>
+                <div class="flyer-services-grid">
+                    <div class="flyer-service-item"><span class="material-symbols-outlined">restaurant</span> Provisions
+                        & Bonded</div>
+                    <div class="flyer-service-item"><span class="material-symbols-outlined">anchor</span> Deck Stores
+                    </div>
+                    <div class="flyer-service-item"><span class="material-symbols-outlined">settings</span> Engine
+                        Stores</div>
+                    <div class="flyer-service-item"><span class="material-symbols-outlined">electrical_services</span>
+                        Electrical Stores</div>
+                    <div class="flyer-service-item"><span class="material-symbols-outlined">bed</span> Cabin Stores
+                    </div>
+                    <div class="flyer-service-item"><span class="material-symbols-outlined">medical_services</span>
+                        Medical Stores</div>
+                    <div class="flyer-service-item"><span class="material-symbols-outlined">construction</span>
+                        Technical & Welding</div>
+                    <div class="flyer-service-item"><span class="material-symbols-outlined">emergency</span>
+                        Pyrotechnics</div>
+                </div>
+                <div class="flyer-divider"></div>
+                <div class="flyer-certs">ISO 9001 · ISO 22000 · ISO 14001 · ISO 45001 · HACCP · IMPA · ShipServe ·
+                    Procureship</div>
+                <div><button class="flyer-download-btn"><span class="material-symbols-outlined"
+                            style="font-size:17px">download</span>Download PDF Flyer</button></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CERTIFICATE VIEW MODAL -->
+    <div class="modal-overlay" id="cert-modal">
+        <div class="modal-box cert-modal-box">
+            <button class="modal-close" onclick="closeModal('cert-modal')"><span class="material-symbols-outlined"
+                    style="font-size:17px">close</span></button>
+            <div class="modal-title" id="cert-modal-title">Certificate</div>
+            <div class="modal-subtitle" id="cert-modal-sub">Indo Hellas — Certification Document</div>
+            <div class="cert-frame" id="cert-frame">
+                <img id="cert-frame-img" src="" alt="Certificate">
+                <div class="cert-frame-placeholder" id="cert-frame-placeholder">
+                    <span class="material-symbols-outlined">workspace_premium</span>
+                    <p>Certificate image will be displayed here once uploaded.</p>
+                    <small>Add your certificate file as: <span id="cert-filename-hint">cert-name.png</span></small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NAVBAR -->
+    <header id="navbar">
+        <div class="container nav-inner">
+            <a href="#" class="nav-logo-group">
+                <div class="nav-logo-placeholder">
+                    <img src="/assets/logo.png" id="nav-logo-img" alt="Indo Hellas Logo" onerror="this.style.display='none'">
+                </div>
+                <span class="nav-logo-text">INDO HELLAS</span>
+            </a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#why-us">Why Us</a></li>
+                    <li><a href="#network">Network</a></li>
+                    <li><a href="#certificates">Certificates</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+            <div style="display:flex;align-items:center;gap:14px">
+                <button class="nav-cta" onclick="openModal('contact-modal')">Contact Us</button>
+                <button class="hamburger" id="hamburger"
+                    aria-label="Menu"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+    </header>
+
+    <div id="mobile-menu">
+        <a href="#about">About</a><a href="#services">Services</a><a href="#why-us">Why Us</a>
+        <a href="#network">Network</a><a href="#certificates">Certificates</a><a href="#contact">Contact</a>
+    </div>
+
+    <!-- HERO -->
+    <section id="hero" data-theme="dark">
+        <video id="hero-video" autoplay muted loop playsinline>
+            <source src="hero.mp4" type="video/mp4">
+            <source src="hero.webm" type="video/webm">
+        </video>
+        <img id="hero-fallback"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrNO-0KyBH3fEk5mzTogoee0q0Xnhl-HcXmtCtKolqvOh1mLcz-qbtlM7MIOD6_wcW9YjJr3MlOYfFIKbzHs3Aj5yaLXwYgsg01RvEJDhkBukDUvnEbEnHTxcTHcpH06j7VYgO2nAP0UmKyqUQCj0jbLX9w0UEnTJYuibdpQ0IB_zZCNCrK0B5SeHvMLepYKRD4oWoVMKOZ1EOGuaX0wM-AwSok_kYEQO_Z-HUPNfg94EWoHc2r3HWD3Z3SFNlYZ95ZnJuMhD-d9I"
+            alt="Ship at sea">
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+
+            <!-- Headline + Logo side by side -->
+            <div class="hero-top-row">
+                <h1 class="hero-headline">
+                    Welcome to<br>
+                    <span class="accent">Indo Hellas</span><br>
+                    World Wide.
+                </h1>
+                <div class="hero-logo-wrap" id="hero-logo-wrap">
+                    <!-- Real logo — swap src to your logo.png -->
+                    <img src="/assets/logo.png" alt="Indo Hellas Logo" id="hero-logo-img"
+                        onerror="this.style.display='none';document.getElementById('hero-logo-fallback').style.display='flex'">
+                    <!-- Fallback shown if logo.png not found -->
+                    <div class="hero-logo-placeholder" id="hero-logo-fallback" style="display:none">
+                        <span class="material-symbols-outlined">sailing</span>
+                        <p>Indo Hellas</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-sub-row">
+                <div class="hero-sub-box outline">One Stop Shop</div>
+                <div class="hero-sub-box filled">General Marine Suppliers</div>
+            </div>
+            <div class="hero-bottom">
+                <div class="hero-stat">
+                    <h3>Marine Services</h3>
+                    <p>We provide high quality marine services to clients around the world ensuring excellence and
+                        reliability across every region we serve.</p>
+                </div>
+                <div class="hero-stat">
+                    <h3>360° Support</h3>
+                    <p>We are committed to being at your service whenever you need us, ready to offer assistance and
+                        support at any time.</p>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator" id="scroll-indicator"><span>Scroll</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- FAB -->
+    <div class="fab-container">
+        <button class="fab" onclick="openModal('flyer-modal')">
+            <span class="fab-label">View Flyer</span>
+            <div class="fab-icon"><span class="material-symbols-outlined">description</span></div>
+        </button>
+    </div>
+
+    <!-- ABOUT -->
+    <section id="about" data-theme="light">
+        <div class="container">
+            <div class="about-section-header reveal">
+                <span class="section-tag about-section-tag">Who We Are</span>
+                <h2 class="about-section-title">About Us</h2>
+                <p class="about-section-lead">A Legacy of Trust. A Commitment to Excellence. A Global Marine Partner You
+                    Can Rely On. For more than four decades, INDO HELLAS has stood at the forefront of the maritime
+                    industry — trusted by some of the most reputable shipowners and operators across the world.</p>
+            </div>
+            <div class="about-tabs reveal">
+                <button class="about-tab active" onclick="switchAboutTab(0)">Our Legacy</button>
+                <button class="about-tab" onclick="switchAboutTab(1)">Our Journey</button>
+                <button class="about-tab" onclick="switchAboutTab(2)">Our Commitment</button>
+            </div>
+            <div class="about-panel active" id="about-panel-0">
+                <div class="about-grid">
+                    <div>
+                        <span class="section-tag about-sub-tag reveal">Our Legacy</span>
+                        <h3 class="about-sub-headline reveal">A Legacy of Reliability in the Global Marine Industry</h3>
+                        <p class="about-body reveal">For more than four decades, INDO HELLAS has been a name synonymous
+                            with trust, efficiency, and excellence in ship supply services. Founded in 1996 in Chennai
+                            (Madras), we began with a mission to provide world-class ship chandling solutions to vessels
+                            operating across India.</p>
+                        <p class="about-body reveal">What started as a local operation has grown into a globally
+                            connected marine service provider, supporting ships across major and minor Indian ports —
+                            and expanding internationally since 2018. Today, INDO HELLAS stands as one of the oldest and
+                            most reputed marine suppliers, trusted by shipowners, fleet managers, and maritime
+                            professionals worldwide.</p>
+                        <div class="about-feature reveal">
+                            <div class="feature-icon"><span class="material-symbols-outlined">warehouse</span></div>
+                            <div>
+                                <div class="feature-title">Our Facilities</div>
+                                <p class="feature-desc">Our own 600 sq mtr warehouse, 2000 sq mtr workspace, located
+                                    just 1 km from the port — backed by 16 dedicated employees who go the extra mile
+                                    every day.</p>
+                            </div>
+                        </div>
+                        <div class="about-feature reveal">
+                            <div class="feature-icon"><span class="material-symbols-outlined">handshake</span></div>
+                            <div>
+                                <div class="feature-title">More Than Just Suppliers</div>
+                                <p class="feature-desc">We are partners in your vessel's journey, ensuring smooth
+                                    operations from port to port, ocean to ocean — with precision, care, and dedication
+                                    at every step.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-images reveal-right">
+                        <img class="about-img"
+                            src="/assets/about1.png"
+                            alt="Marine supply">
+                        <img class="about-img" style="margin-top:0"
+                            src="/assets/about2.jpg"
+                            alt="Port">
+                    </div>
+                </div>
+            </div>
+            <div class="about-panel" id="about-panel-1">
+                <div class="journey-layout">
+                    <div class="journey-image-wrap reveal-left">
+                        <img class="journey-img"
+                            src="/assets/about3.png"
+                            alt="Our journey">
+                        <div class="journey-badge">
+                            <div class="journey-badge-num">30+</div>
+                            <div class="journey-badge-label">Years of Excellence</div>
+                        </div>
+                    </div>
+                    <div class="reveal">
+                        <span class="section-tag about-sub-tag">Our Journey & Experience</span>
+                        <h3 class="about-sub-headline">Continuous Growth, Consistent Excellence</h3>
+                        <p class="about-body">With over 30 years of industry experience, INDO HELLAS has built a strong
+                            reputation for quality, ethics, and consistency. Our journey reflects continuous growth —
+                            driven by an unwavering commitment to our clients and the maritime community.</p>
+                        <div class="journey-milestones">
+                            <div class="milestone"><span class="milestone-year">1996</span>
+                                <div class="milestone-dot"></div>
+                                <div class="milestone-text"><strong>Founded in Chennai</strong>Started with a mission to
+                                    provide world-class ship chandling solutions across India.</div>
+                            </div>
+                            <div class="milestone"><span class="milestone-year">2000</span>
+                                <div class="milestone-dot"></div>
+                                <div class="milestone-text"><strong>Pan-India Expansion</strong>Extended operations to
+                                    cover all major and minor Indian ports.</div>
+                            </div>
+                            <div class="milestone"><span class="milestone-year">2010s</span>
+                                <div class="milestone-dot"></div>
+                                <div class="milestone-text"><strong>International Relationships</strong>Built long-term
+                                    partnerships with global shipping companies spanning 1 to 4 decades.</div>
+                            </div>
+                            <div class="milestone"><span class="milestone-year">2018</span>
+                                <div class="milestone-dot"></div>
+                                <div class="milestone-text"><strong>Global Operations Launched</strong>Established
+                                    international presence, supported by a powerful global supply chain network.</div>
+                            </div>
+                            <div class="milestone"><span class="milestone-year">Today</span>
+                                <div class="milestone-dot"></div>
+                                <div class="milestone-text"><strong>World-Class Marine Partner</strong>Recognised as one
+                                    of the oldest and most reputed marine suppliers trusted worldwide.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="about-panel" id="about-panel-2">
+                <div class="commitment-layout">
+                    <div class="reveal">
+                        <span class="section-tag about-sub-tag">Our Commitment & Values</span>
+                        <h3 class="about-sub-headline">Delivering Global Quality with Local Care</h3>
+                        <p class="commitment-intro">INDO HELLAS is committed to delivering world-class ship supply
+                            services with integrity, precision, and care. We cooperate with reputable shipping companies
+                            across the world, coordinating through regional hubs to deliver supplies wherever and
+                            whenever required.</p>
+                        <div class="commitment-list">
+                            <div class="commitment-item">
+                                <div class="commitment-check"><span class="material-symbols-outlined">check</span></div>
+                                <div class="commitment-item-text"><strong>Quality products at competitive
+                                        prices</strong> — sourced from trusted, certified suppliers worldwide.</div>
+                            </div>
+                            <div class="commitment-item">
+                                <div class="commitment-check"><span class="material-symbols-outlined">check</span></div>
+                                <div class="commitment-item-text"><strong>Fast and dependable deliveries</strong> —
+                                    engineered logistics to meet any port schedule.</div>
+                            </div>
+                            <div class="commitment-item">
+                                <div class="commitment-check"><span class="material-symbols-outlined">check</span></div>
+                                <div class="commitment-item-text"><strong>24/7/365 operational support</strong> — our
+                                    team is always on standby, in every time zone.</div>
+                            </div>
+                            <div class="commitment-item">
+                                <div class="commitment-check"><span class="material-symbols-outlined">check</span></div>
+                                <div class="commitment-item-text"><strong>ISO-certified service</strong> — ISO 9001,
+                                    22000, 14001, 45001, and HACCP certified operations.</div>
+                            </div>
+                            <div class="commitment-item">
+                                <div class="commitment-check"><span class="material-symbols-outlined">check</span></div>
+                                <div class="commitment-item-text"><strong>Ethical business practices</strong> —
+                                    transparency and integrity form the backbone of every transaction.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="commitment-cards reveal-right">
+                        <div class="commitment-card">
+                            <div class="commitment-card-icon"><span class="material-symbols-outlined">verified</span>
+                            </div>
+                            <div class="commitment-card-title">Certified Excellence</div>
+                            <div class="commitment-card-text">Every service we deliver is backed by international
+                                certifications — ensuring your vessel meets all compliance standards at every port of
+                                call.</div>
+                        </div>
+                        <div class="commitment-card">
+                            <div class="commitment-card-icon"><span
+                                    class="material-symbols-outlined">local_shipping</span></div>
+                            <div class="commitment-card-title">Supply Chain Strength</div>
+                            <div class="commitment-card-text">A robust global supply chain allows us to deliver
+                                provisions, technical stores, medical supplies, and more — from any major port, on time,
+                                every time.</div>
+                        </div>
+                        <div class="commitment-card">
+                            <div class="commitment-card-icon"><span
+                                    class="material-symbols-outlined">support_agent</span></div>
+                            <div class="commitment-card-title">Always Available</div>
+                            <div class="commitment-card-text">Our dedicated team works tirelessly to ensure timely,
+                                flawless service — responding instantly to your vessel's needs, regardless of the hour
+                                or location.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="about-counter-strip">
+            <div class="container">
+                <div class="counter-grid">
+                    <div class="counter-item">
+                        <div class="counter-num" data-target="7000" data-suffix="+">0</div>
+                        <div class="counter-label">Ships Supplied</div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-num" data-target="100" data-suffix="+">0</div>
+                        <div class="counter-label">Ports Served</div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-num" data-target="15" data-suffix="+">0</div>
+                        <div class="counter-label">Countries Covered</div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-num" data-target="150" data-suffix="+">0</div>
+                        <div class="counter-label">Clients</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services" data-theme="dark">
+        <div class="container">
+            <div class="services-layout">
+                <div class="services-visual reveal-left">
+                    <div class="carousel-slide active"><img
+                            src="/assets/Provision-Stores.png"
+                            alt="Provisions"></div>
+                    <div class="carousel-slide"><img
+                            src="/assets/Deck-Stores.png"
+                            alt="Deck"></div>
+                    <div class="carousel-slide"><img
+                            src="/assets/Engine-Stores.png"
+                            alt="Engine"></div>
+                    <div class="carousel-slide"><img
+                            src="/assets/Electrical-Stores.png"
+                            alt="Electrical"></div>
+                    <div class="carousel-slide"><img
+                            src="/assets/Cabin-Stores.png"
+                            alt="Cabin"></div>
+                    <div class="carousel-slide"><img
+                            src="/assets/Medical-Stores.png"
+                            alt="Medical"></div>
+                    <div class="carousel-slide"><img
+                            src="/assets/Technical-Stores.png"
+                            alt="Technical"></div>
+                    <div class="carousel-slide"><img
+                            src="/assets/Ropes.png"
+                            alt="Ropes"></div>
+                    <div class="carousel-slide"><img
+                            src="/assets/Chemicals.png"
+                            alt="Chemicals"></div>
+                    <div class="carousel-slide"><img
+                            src="/assets/Bonded-Stores.png"
+                            alt="Bonded"></div>
+                    <div class="services-visual-overlay"></div>
+                    <div class="services-visual-label">
+                        <h3 id="carousel-label-title">Fresh Provisions & Bonded</h3>
+                        <p id="carousel-label-sub">High-quality food & bonded goods</p>
+                    </div>
+                    <div class="carousel-dots" id="carousel-dots"></div>
+                </div>
+                <div class="services-content">
+                    <div class="services-header">
+                        <span class="section-tag services-tag reveal">Our Expertise</span>
+                        <h2 class="services-headline reveal">Comprehensive Marine Supply</h2>
+                        <p class="services-intro reveal">As a full-service marine supplier, INDO HELLAS provides a
+                            complete range of provisions, stores, and operational solutions to keep your vessels running
+                            smoothly — anytime, anywhere.</p>
+                    </div>
+                    <div class="service-tabs reveal" id="service-tabs"></div>
+                    <div id="service-panels"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHY US -->
+    <section id="why-us" data-theme="light">
+        <div class="container">
+            <div class="why-header">
+                <h2 class="why-headline reveal">Why Global Fleets Trust Us</h2>
+                <p class="why-subhead reveal">Three decades of maritime heritage, ethical business practices, and a team
+                    that goes the extra mile — every single day.</p>
+            </div>
+            <div class="bento-row1">
+                <div class="bento-card bento-large reveal">
+                    <div>
+                        <div class="bento-icon-wrap"><span class="material-symbols-outlined">history</span></div>
+                        <div class="bento-title">30+ Years of Maritime Legacy</div>
+                        <p class="bento-body">A relationship based on honesty for over 30 years. Since 1996, INDO HELLAS
+                            has navigated the complexities of international maritime trade, building a reputation for
+                            reliability that spans generations of seafarers worldwide.</p>
+                    </div>
+                    <div class="bento-tags"><span class="bento-tag">Reliable</span><span class="bento-tag">Since
+                            1996</span><span class="bento-tag">Experienced</span><span class="bento-tag">Trusted</span>
+                    </div>
+                </div>
+                <div class="bento-card bento-dark reveal">
+                    <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">public</span>
+                    <div class="bento-title">Global Reach, Local Expertise</div>
+                    <p class="bento-body">From India to international ports — a one-stop solution for all ship needs
+                        across major maritime locations worldwide.</p>
+                </div>
+            </div>
+            <div class="bento-row2">
+                <div class="bento-card bento-muted reveal">
+                    <div class="bento-icon-wrap"><span class="material-symbols-outlined">support_agent</span></div>
+                    <div class="bento-title">360° Support</div>
+                    <p class="bento-body">We work 24×7×365 to fulfil your vessel's needs at competitive prices. Always
+                        on call, always ready, in every time zone.</p>
+                </div>
+                <div class="bento-card bento-quality reveal">
+                    <div style="flex:1">
+                        <div class="bento-title">Quality Without Compromise</div>
+                        <p class="bento-body">Strict quality standards backed by ISO 9001, 22000, 14001, 45001, and
+                            HACCP certifications. Our long-standing reputation is built on trust, consistency, and
+                            reliability across every port we serve.</p>
+                    </div>
+                    <div class="bento-quality-icon"><span class="material-symbols-outlined">verified_user</span></div>
+                </div>
+                <div class="bento-card reveal">
+                    <div class="bento-icon-wrap"><span class="material-symbols-outlined">groups</span></div>
+                    <div class="bento-title">Dedicated Team</div>
+                    <p class="bento-body">Our 16 team members work hard every day and go the extra mile to fulfil your
+                        ship's needs with precision and care.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NETWORK -->
+    <section id="network" data-theme="dark">
+        <div class="container">
+            <div class="network-grid">
+                <div>
+                    <span class="section-tag network-tag reveal">Our Reach</span>
+                    <h2 class="network-headline reveal">A Truly Global Network</h2>
+                    <p class="network-body reveal">We operate across seven continents, providing a unified supply chain
+                        solution that follows your fleet wherever it sails.</p>
+                    <div class="accordion-item reveal" data-accordion>
+                        <div class="accordion-header"><span class="accordion-title">Africa</span><span
+                                class="material-symbols-outlined accordion-icon">add</span></div>
+                        <div class="accordion-body">
+                            <div class="accordion-country-list"><span>Benin</span><span>Cameroon</span><span>Cape
+                                    Verde</span><span>Congo</span><span>Cote
+                                    d'Ivoire</span><span>Djibouti</span><span>Egypt</span><span>Gabon</span><span>Ghana</span><span>Guinea</span><span>Mauritius</span><span>Morocco</span><span>Mozambique</span><span>Namibia</span><span>Nigeria</span><span>Senegal</span><span>South
+                                    Africa</span><span>Tanzania</span><span>Togo</span><span>Tunisia</span></div>
+                        </div>
+                    </div>
+                    <div class="accordion-item reveal" data-accordion>
+                        <div class="accordion-header"><span class="accordion-title">Asia</span><span
+                                class="material-symbols-outlined accordion-icon">add</span></div>
+                        <div class="accordion-body">
+                            <div class="accordion-country-list"><span>Bangladesh</span><span>China</span><span>Hong
+                                    Kong</span><span>India</span><span>Indonesia</span><span>Iran</span><span>Iraq</span><span>Israel</span><span>Japan</span><span>Jordan</span><span>Korea</span><span>Myanmar</span><span>Philippines</span><span>Singapore</span><span>Taiwan</span><span>Thailand</span><span>Turkey</span><span>Vietnam</span><span>Yemen</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item reveal" data-accordion>
+                        <div class="accordion-header"><span class="accordion-title">Europe</span><span
+                                class="material-symbols-outlined accordion-icon">add</span></div>
+                        <div class="accordion-body">
+                            <div class="accordion-country-list">
+                                <span>Bulgaria</span><span>Denmark</span><span>Estonia</span><span>Finland</span><span>France</span><span>Georgia</span><span>Ireland</span><span>Italy</span><span>Latvia</span><span>Lithuania</span><span>Netherlands</span><span>Norway</span><span>Poland</span><span>Portugal</span><span>Romania</span><span>Russia</span><span>Spain</span><span>Ukraine</span><span>United
+                                    Kingdom</span></div>
+                        </div>
+                    </div>
+                    <div class="accordion-item reveal" data-accordion>
+                        <div class="accordion-header"><span class="accordion-title">North America</span><span
+                                class="material-symbols-outlined accordion-icon">add</span></div>
+                        <div class="accordion-body">
+                            <div class="accordion-country-list"><span>USA</span><span>Canada</span></div>
+                        </div>
+                    </div>
+                    <div class="accordion-item reveal" data-accordion>
+                        <div class="accordion-header"><span class="accordion-title">South America</span><span
+                                class="material-symbols-outlined accordion-icon">add</span></div>
+                        <div class="accordion-body">
+                            <div class="accordion-country-list">
+                                <span>Argentina</span><span>Brazil</span><span>Chile</span><span>Colombia</span><span>Ecuador</span><span>Peru</span><span>Venezuela</span><span>Uruguay</span><span>Suriname</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item reveal" data-accordion>
+                        <div class="accordion-header"><span class="accordion-title">Central America</span><span
+                                class="material-symbols-outlined accordion-icon">add</span></div>
+                        <div class="accordion-body">
+                            <div class="accordion-country-list"><span>Costa
+                                    Rica</span><span>Guatemala</span><span>Mexico</span><span>Panama</span></div>
+                        </div>
+                    </div>
+                    <div class="accordion-item reveal" data-accordion>
+                        <div class="accordion-header"><span class="accordion-title">Caribbean Islands</span><span
+                                class="material-symbols-outlined accordion-icon">add</span></div>
+                        <div class="accordion-body">
+                            <div class="accordion-country-list"><span>Aruba</span><span>Curaçao</span><span>Dominican
+                                    Republic</span><span>Jamaica</span><span>Trinidad & Tobago</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="map-card reveal-right">
+                    <div class="map-visual">
+                        <img class="map-bg"
+                            src="/assets/network.png"
+                            alt="World map">
+                        <div class="map-dots">
+                            <div class="map-dot" style="top:55%;left:85%"></div>
+                            <div class="map-dot" style="top:38%;left:48%"></div>
+                            <div class="map-dot" style="top:45%;left:20%"></div>
+                            <div class="map-dot" style="top:65%;left:55%"></div>
+                            <div class="map-dot" style="top:44%;left:57%"></div>
+                            <div class="map-dot" style="top:50%;left:70%"></div>
+                            <div class="map-dot" style="top:58%;left:38%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CERTIFICATES -->
+    <section id="certificates" data-theme="light">
+        <div class="container">
+            <div class="cert-header-wrap reveal">
+                <span class="section-tag cert-section-tag">Our Accreditations</span>
+                <h2 class="cert-title">Certificates</h2>
+                <p class="cert-tagline">"Our certificates speak for our commitment to global marine standards."</p>
+                <p class="cert-desc">Every certificate we hold is a testament to our unwavering dedication to quality,
+                    safety, and compliance. Indo Hellas is proud to be recognised by leading international maritime
+                    bodies — ensuring every vessel we serve meets the highest global standards. Click any certificate to
+                    view the document.</p>
+            </div>
+        </div>
+        <div class="marquee-border">
+            <div class="marquee-wrapper">
+                <div class="marquee-track" id="cert-track"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" data-theme="light">
+        <div class="container">
+            <div class="contact-grid">
+                <div>
+                    <h2 class="contact-headline reveal">Let's Connect</h2>
+                    <p class="contact-subhead reveal">Our central operations desk is available 24/7. Reach out for a
+                        specialised quote or to enquire about our ship supply services.</p>
+                    <div class="contact-info-item reveal">
+                        <div class="contact-icon"><span class="material-symbols-outlined">location_on</span></div>
+                        <div>
+                            <div class="contact-info-label">Office Address</div>
+                            <div class="contact-info-value">No. 95, Linghi Chetty Street,<br>1st Floor, Suite No. 7,
+                                Mannady,<br>Chennai – 600 001, India</div>
+                        </div>
+                    </div>
+                    <div class="contact-info-item reveal">
+                        <div class="contact-icon"><span class="material-symbols-outlined">call</span></div>
+                        <div>
+                            <div class="contact-info-label">Phone Lines</div>
+                            <div class="contact-info-value">
+                                <a class="contact-link" href="tel:+914442167484">+91 444 216 7484</a> &nbsp;|&nbsp; <a
+                                    class="contact-link" href="tel:+914442167485">+91 444 216 7485</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="contact-info-item reveal">
+                        <div class="contact-icon"><span class="material-symbols-outlined">alternate_email</span></div>
+                        <div>
+                            <div class="contact-info-label">Email Addresses</div>
+                            <div class="contact-emails contact-info-value">
+                                <a class="contact-link"
+                                    href="mailto:technical@indohellas.in">technical@indohellas.in</a>
+                                <a class="contact-link" href="mailto:supply@indohellas.in">supply@indohellas.in</a>
+                                <a class="contact-link"
+                                    href="mailto:indohellas@indohellas.in">indohellas@indohellas.in</a>
+                                <a class="contact-link" href="mailto:info@indohellas.in">info@indohellas.in</a>
+                                <a class="contact-link" href="mailto:indohellas@gmail.com">indohellas@gmail.com</a>
+                                <a class="contact-link"
+                                    href="mailto:supplyindohellas@gmail.com">supplyindohellas@gmail.com</a>
+                                <a class="contact-link" href="mailto:accounts@indohellas.in">accounts@indohellas.in</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="contact-info-item reveal">
+                        <div class="contact-icon"><span class="material-symbols-outlined">language</span></div>
+                        <div>
+                            <div class="contact-info-label">Websites</div>
+                            <div class="contact-info-value">
+                                <a class="contact-link" href="https://www.indohellasindia.com"
+                                    target="_blank">www.indohellasindia.com</a> &nbsp;|&nbsp; <a class="contact-link"
+                                    href="https://www.indohellas.in" target="_blank">www.indohellas.in</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="map-placeholder reveal">
+                        <img src="/assets/map.png" alt="Map">
+                        <a href="https://maps.google.com/?cid=12865298198414146297&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAMYASAF&hl=en-US&source=embed" target="_blank"
+                            class="map-btn">
+                            <span class="material-symbols-outlined" style="font-size:16px">open_in_new</span>
+                            View Indo Hellas on Map
+                        </a>
+                    </div>
+                </div>
+                <div class="contact-form-card reveal-right">
+                    <form id="contact-form">
+                        <div class="form-row">
+                            <div><label class="form-label">Full Name</label><input class="form-input" type="text"
+                                    placeholder="Captain John Smith"></div>
+                            <div><label class="form-label">Vessel Name</label><input class="form-input" type="text"
+                                    placeholder="MV Ocean Pioneer"></div>
+                        </div>
+                        <div class="form-group"><label class="form-label">Email Address</label><input class="form-input"
+                                type="email" placeholder="captain@fleet.com"></div>
+                        <div class="form-group"><label class="form-label">Service Required</label>
+                            <select class="form-select">
+                                <option>Fresh Provisions & Bonded Stores</option>
+                                <option>Deck Stores</option>
+                                <option>Engine Stores</option>
+                                <option>Electrical Stores</option>
+                                <option>Cabin Stores</option>
+                                <option>Medical Stores</option>
+                                <option>Technical & Welding Items</option>
+                                <option>Chemicals, Paints & Gases</option>
+                                <option>Ropes & Mooring</option>
+                                <option>Pyrotechnics</option>
+                                <option>General Enquiry</option>
+                            </select>
+                        </div>
+                        <div class="form-group"><label class="form-label">Message / RFQ Details</label><textarea
+                                class="form-textarea"
+                                placeholder="Describe your requirements, port of call, and estimated date of arrival..."></textarea>
+                        </div>
+                        <button type="submit" class="form-submit">Send Request</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer data-theme="dark">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-logo-row">
+                        <span class="footer-logo">INDO HELLAS</span>
+                    </div>
+                    <p class="footer-tagline">General Marine Suppliers — World Wide. Serving global fleets with
+                        reliability and excellence since 1996.</p>
+                    <img class="footer-logo-img" src="/assets/logo.png" alt="Indo Hellas Logo" onerror="this.style.display='none'">
+                </div>
+                <div>
+                    <span class="footer-col-title">Contact Details</span>
+                    <ul class="footer-links">
+                        <li><a href="mailto:technical@indohellas.in">technical@indohellas.in</a></li>
+                        <li><a href="mailto:indohellas@indohellas.in">indohellas@indohellas.in</a></li>
+                        <li><a href="mailto:supply@indohellas.in">supply@indohellas.in</a></li>
+                        <li><a href="mailto:info@indohellas.in">info@indohellas.in</a></li>
+                        <li><a href="tel:+914442167484">+91 444 216 7484</a></li>
+                        <li><a href="tel:+914442167485">+91 444 216 7485</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <span class="footer-col-title">Quick Links</span>
+                    <ul class="footer-links">
+                        <li><a href="#about">Our Story</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#why-us">Why Us</a></li>
+                        <li><a href="#network">Global Network</a></li>
+                        <li><a href="#certificates">Certificates</a></li>
+                        <li><a href="#contact">Request Quote</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <span class="footer-col-title">Global Ports</span>
+                    <div class="footer-ports">
+                        <span>Chennai</span><span>Suez Canal</span>
+                        <span>Singapore</span><span>Rotterdam</span>
+                        <span>Dubai</span><span>Hamburg</span>
+                        <span>Colombo</span><span>Port Said</span>
+                        <span>Mumbai</span><span>Houston</span>
+                        <span style="grid-column:span 2;opacity:.35;font-style:italic">& Other Major Ports</span>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-quote">"A Legacy of Trust. A Commitment to Excellence. A Global Marine Partner You Can
+                    Rely On."</p>
+                <p class="footer-copy">© 2025 Indo Hellas General Marine Suppliers. Chennai, India.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ─── CERTIFICATES ─────────────────────────────────────────────────
+        // Map cert name → filename (add your actual filenames here)
+        const certFiles = {
+            'IMPA': '/assets/IMPA.jpg',
+            'ShipServe ID: 204899': '/assets/ShipServe.png',
+            'Procureship ID: 1976': '/assets/Procureship.png',
+            'ISO 9001': '/assets/ISO9001.jpg',
+            'ISO 22000': '/assets/ISO22000.jpg',
+            'ISO 14001': '/assets/ISO14001.jpg',
+            'ISO 45001': '/assets/ISO45001.jpg',
+            'HACCP': '/assets/HACCP.jpg',
+        };
+        const certNames = Object.keys(certFiles);
+        const track = document.getElementById('cert-track');
+        // Duplicate for seamless loop
+        [...certNames, ...certNames].forEach((name, i) => {
+            if (i > 0 && i % 1 === 0) {
+                const div = document.createElement('div');
+                div.className = 'marquee-item-divider';
+                track.appendChild(div);
+            }
+            const item = document.createElement('div');
+            item.className = 'marquee-item';
+            item.innerHTML = `<span>${name}</span>`;
+            item.addEventListener('click', () => openCertModal(name));
+            track.appendChild(item);
+        });
+
+        function openCertModal(name) {
+            document.getElementById('cert-modal-title').textContent = name;
+            document.getElementById('cert-modal-sub').textContent = `Indo Hellas — ${name} Certification`;
+            const fname = certFiles[name] || 'certificate.png';
+            document.getElementById('cert-filename-hint').textContent = fname;
+            const img = document.getElementById('cert-frame-img');
+            const ph = document.getElementById('cert-frame-placeholder');
+            img.src = fname;
+            img.style.display = 'none';
+            ph.style.display = 'flex';
+            img.onload = () => { img.style.display = 'block'; ph.style.display = 'none'; };
+            img.onerror = () => { img.style.display = 'none'; ph.style.display = 'flex'; };
+            openModal('cert-modal');
+        }
+
+        // ─── SERVICES ─────────────────────────────────────────────────────
+        const services = [
+            { tab: 'Provisions', icon: 'restaurant', title: 'Fresh Provisions & Bonded Stores', desc: 'High-quality food supplies, beverages, frozen items, and bonded goods sourced to meet international maritime standards.', img_label: 'Fresh Provisions & Bonded', img_sub: 'High-quality food & bonded goods', categories: ['Meat & Poultry (Fresh/Frozen)', 'Fish & Seafood', 'Vegetables & Fruits', 'Dairy Products & Eggs', 'Grain & Grain Products', 'Oils, Fats & Dressings', 'Beverages & Juices', 'Bakery & Preserves', 'Herbs, Spices & Sauces', 'Ethnic & Specialty Items'] },
+            { tab: 'Deck Stores', icon: 'anchor', title: 'Deck Stores', desc: 'Complete range of deck equipment, cabin essentials, PPE, and safety items required for safe daily vessel operations.', img_label: 'Deck Stores', img_sub: 'Safety & operational deck equipment', categories: ['Ropes & Hawsers', 'Rigging & General Deck Items', 'Safety & Firefighting Equipment', 'Hoses & Couplings', 'Nautical Equipment', 'Protective Workwear & Clothing', 'Cleaning Materials & Chemicals', 'Hardware & Petroleum Products', 'Stationery & Lavatory Equipment', 'Brushes & Mats'] },
+            { tab: 'Engine Stores', icon: 'settings', title: 'Engine Stores', desc: "Genuine engine spares, tools, valves, pipes, and all mechanical consumables to keep your vessel's engine room running at peak performance.", img_label: 'Engine Stores', img_sub: 'Engine spares & mechanical supplies', categories: ['Valves & Cocks', 'Pipes, Tubes & Fittings', 'Screws, Nuts & Fasteners', 'Metal Sheets & Bars', 'Hand Tools & Cutting Tools', 'Measuring Tools', 'Pneumatic Tools', 'Packing & Jointing Materials', 'Bearings', 'Hoses & Couplings'] },
+            { tab: 'Electrical', icon: 'electrical_services', title: 'Electrical Stores', desc: 'Reliable electrical components, cables, control equipment, and technical supplies to maintain full electrical integrity aboard.', img_label: 'Electrical Stores', img_sub: 'Electrical components & cables', categories: ['Electrical Equipment & Cables', 'Control & Instrumentation', 'Lighting & Fixtures', 'Switchgear & Panels', 'Motor Spares', 'Fuses & Circuit Breakers', 'Safety Equipment', 'Cleaning Materials', 'Welding Equipment', 'Protective Clothing'] },
+            { tab: 'Cabin Stores', icon: 'bed', title: 'Cabin Stores', desc: 'A complete, competitively priced range of cabin stores — from bedding and toiletries to kitchen appliances and custom foam mattresses (any size).', img_label: 'Cabin Stores', img_sub: 'Crew comfort & cabin essentials', categories: ['Cloth & Linen Products', 'Tableware & Galley Utensils', 'Dishware & Glassware', 'Brushware', 'Toiletries & Crew Amenities', 'Electrical Kitchen Appliances 110/220v', 'Cleaning Materials & Chemicals', 'Galley & Cooking Items'] },
+            { tab: 'Medical', icon: 'medical_services', title: 'Medical Stores', desc: 'Fully compliant medical supplies including specialised items, first aid kits, and medical locker certification services.', img_label: 'Medical Stores', img_sub: 'WHO-compliant medical supplies', categories: ['Bandages & Dressings', 'First Aid Kits', 'Specialised Medical Items', 'Neil Robertson Stretcher', 'Medical Locker Certification'] },
+            { tab: 'Technical', icon: 'construction', title: 'Technical & Welding Items', desc: 'All types of technical and welding consumables to support repair, maintenance, and onboard fabrication operations.', img_label: 'Technical & Welding', img_sub: 'Repair & maintenance consumables', categories: ['Welding Consumables & Rods', 'Cutting Tools & Abrasives', 'Industrial Gases', 'Safety & Protective Gear', 'Grinding Wheels', 'Welding Machines & Parts'] },
+            { tab: 'Ropes', icon: 'linear_scale', title: 'Ropes & Mooring', desc: 'High-quality ropes and mooring solutions for all vessel types — sourced from certified manufacturers to meet international maritime standards.', img_label: 'Ropes & Mooring', img_sub: 'Wire, mooring & pilot ropes', categories: ['Wire Ropes', 'Steel Wire Ropes', 'Mooring Ropes', 'Pilot Ladder'] },
+            { tab: 'Chemicals', icon: 'science', title: 'Chemicals, Paints & Gases', desc: 'Certified marine-grade paints, industrial gases, and technical chemicals delivered as per vessel requirements and port regulations.', img_label: 'Chemicals & Paints', img_sub: 'Certified marine-grade products', categories: ['Marine Paints & Coatings', 'Industrial Gases', 'Cleaning Chemicals', 'Rust Inhibitors & Primers', 'Lubricants & Greases', 'Technical Solvents'] },
+            { tab: 'Bonded & More', icon: 'inventory_2', title: 'Bonded Stores & Pyrotechnics', desc: 'Approved pyrotechnic stores, maritime safety equipment, and imported bonded goods including confectionery and beverages.', img_label: 'Bonded Stores', img_sub: 'Pyrotechnics & imported goods', categories: ['Chocolates, Sweets & Confectionery', 'Imported Beverages', 'Bonded General Items', 'Pyrotechnics & Flares', 'Safety Signals', 'Specialised Stock'] }
+        ];
+        const tabsEl = document.getElementById('service-tabs'), panelsEl = document.getElementById('service-panels');
+        let activeService = 0;
+        services.forEach((s, i) => {
+            const tab = document.createElement('button');
+            tab.className = 'service-tab' + (i === 0 ? ' active' : '');
+            tab.textContent = s.tab; tab.onclick = () => switchService(i);
+            tabsEl.appendChild(tab);
+            const panel = document.createElement('div');
+            panel.className = 'service-detail' + (i === 0 ? ' active' : '');
+            panel.innerHTML = `<div class="service-detail-header"><div class="service-detail-icon"><span class="material-symbols-outlined">${s.icon}</span></div><h4>${s.title}</h4></div><p class="service-detail-desc">${s.desc}</p><div class="service-categories">${s.categories.map(c => `<div class="service-cat-item">${c}</div>`).join('')}</div>`;
+            panelsEl.appendChild(panel);
+        });
+        const dotsEl = document.getElementById('carousel-dots'), slides = document.querySelectorAll('.carousel-slide');
+        services.forEach((_, i) => { const dot = document.createElement('button'); dot.className = 'carousel-dot' + (i === 0 ? ' active' : ''); dot.onclick = () => switchService(i); dotsEl.appendChild(dot); });
+        function switchService(idx) {
+            document.querySelectorAll('.service-tab').forEach((t, i) => t.classList.toggle('active', i === idx));
+            document.querySelectorAll('.service-detail').forEach((p, i) => p.classList.toggle('active', i === idx));
+            document.querySelectorAll('.carousel-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+            slides.forEach((s, i) => s.classList.toggle('active', i === idx % slides.length));
+            document.getElementById('carousel-label-title').textContent = services[idx].img_label;
+            document.getElementById('carousel-label-sub').textContent = services[idx].img_sub;
+            activeService = idx;
+        }
+        setInterval(() => switchService((activeService + 1) % services.length), 4500);
+
+        // ─── ABOUT TABS ────────────────────────────────────────────────────
+        function switchAboutTab(idx) {
+            document.querySelectorAll('.about-tab').forEach((t, i) => t.classList.toggle('active', i === idx));
+            document.querySelectorAll('.about-panel').forEach((p, i) => p.classList.toggle('active', i === idx));
+        }
+
+        // ─── COUNTER ───────────────────────────────────────────────────────
+        function animateCounter(el) {
+            const target = parseInt(el.dataset.target), suffix = el.dataset.suffix || '';
+            const inc = target / (2000 / 16); let cur = 0;
+            const t = setInterval(() => { cur += inc; if (cur >= target) { cur = target; clearInterval(t); } el.textContent = Math.floor(cur).toLocaleString() + suffix; }, 16);
+        }
+        new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.querySelectorAll('.counter-num').forEach(animateCounter); counterObs.unobserve(e.target); } }); }, { threshold: .5 }).observe(document.querySelector('.about-counter-strip'));
+        // fix: use named observer
+        const counterObs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.querySelectorAll('.counter-num').forEach(animateCounter); counterObs.unobserve(e.target); } }); }, { threshold: .5 });
+        counterObs.observe(document.querySelector('.about-counter-strip'));
+
+        // ─── MODAL ─────────────────────────────────────────────────────────
+        function openModal(id) { document.getElementById(id).classList.add('open'); document.body.style.overflow = 'hidden'; }
+        function closeModal(id) { document.getElementById(id).classList.remove('open'); document.body.style.overflow = ''; }
+        document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o) closeModal(o.id); }));
+
+        // ─── CURSOR ────────────────────────────────────────────────────────
+        const cursorEl = document.getElementById('cursor'), cursorRing = document.getElementById('cursor-ring');
+        let mx = 0, my = 0, rx = 0, ry = 0;
+        document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursorEl.style.left = mx + 'px'; cursorEl.style.top = my + 'px'; });
+        (function tick() { rx += (mx - rx) * .12; ry += (my - ry) * .12; cursorRing.style.left = rx + 'px'; cursorRing.style.top = ry + 'px'; requestAnimationFrame(tick); })();
+        const darkSecs = document.querySelectorAll('[data-theme="dark"]'); let dc = 0;
+        const dkObs = new IntersectionObserver(entries => { entries.forEach(e => { e.isIntersecting ? dc++ : (dc = Math.max(0, dc - 1)); }); document.body.classList.toggle('on-dark', dc > 0); }, { threshold: .3 });
+        darkSecs.forEach(s => dkObs.observe(s));
+
+        // ─── PROGRESS ──────────────────────────────────────────────────────
+        const pb = document.getElementById('progress');
+        window.addEventListener('scroll', () => { pb.style.width = (window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100) + '%'; });
+
+        // ─── NAVBAR ────────────────────────────────────────────────────────
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 60));
+
+        // ─── HAMBURGER ─────────────────────────────────────────────────────
+        const hamburger = document.getElementById('hamburger'), mobileMenu = document.getElementById('mobile-menu');
+        hamburger.addEventListener('click', () => { hamburger.classList.toggle('open'); mobileMenu.classList.toggle('open'); document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : ''; });
+        mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { hamburger.classList.remove('open'); mobileMenu.classList.remove('open'); document.body.style.overflow = ''; }));
+
+        // ─── VIDEO FALLBACK ────────────────────────────────────────────────
+        const video = document.getElementById('hero-video'), fallback = document.getElementById('hero-fallback');
+        video.addEventListener('error', () => video.style.display = 'none');
+        video.addEventListener('loadeddata', () => fallback.style.display = 'none');
+        if (!video.src || video.src === window.location.href) fallback.style.display = 'block';
+
+        // ─── ACCORDION ─────────────────────────────────────────────────────
+        document.querySelectorAll('[data-accordion]').forEach(item => {
+            item.querySelector('.accordion-header').addEventListener('click', () => {
+                const was = item.classList.contains('open');
+                document.querySelectorAll('[data-accordion]').forEach(i => i.classList.remove('open'));
+                if (!was) item.classList.add('open');
+            });
+        });
+
+        // ─── SMOOTH SCROLL ─────────────────────────────────────────────────
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', e => {
+                const t = document.querySelector(a.getAttribute('href'));
+                if (!t) return; e.preventDefault();
+                window.scrollTo({ top: t.offsetTop - navbar.offsetHeight - 20, behavior: 'smooth' });
+            });
+        });
+        document.getElementById('scroll-indicator').addEventListener('click', () => document.querySelector('#about').scrollIntoView({ behavior: 'smooth' }));
+
+        // ─── FORM ──────────────────────────────────────────────────────────
+        document.getElementById('contact-form').addEventListener('submit', e => {
+            e.preventDefault(); const btn = e.target.querySelector('.form-submit');
+            btn.textContent = 'Message Sent ✓'; btn.style.background = '#1a5e3a';
+            setTimeout(() => { btn.textContent = 'Send Request'; btn.style.background = ''; }, 3000);
+        });
+
+        // ─── GSAP ──────────────────────────────────────────────────────────
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.timeline({ delay: .2 })
+            .to('.hero-headline', { opacity: 1, y: 0, duration: .9, ease: 'power3.out' })
+            .to('.hero-logo-wrap', { opacity: 1, duration: .8, ease: 'power3.out' }, '-=0.5')
+            .to('.hero-sub-row', { opacity: 1, y: 0, duration: .6, ease: 'power3.out' }, '-=0.4')
+            .to('.hero-bottom', { opacity: 1, y: 0, duration: .8, ease: 'power3.out' }, '-=0.4')
+            .to('#scroll-indicator', { opacity: 1, duration: .6 }, '-=0.2');
+        gsap.to('#hero-video, #hero-fallback', { yPercent: 25, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
+        gsap.to('.hero-content', { opacity: 0, y: -60, ease: 'none', scrollTrigger: { trigger: '#hero', start: '30% top', end: '80% top', scrub: true } });
+        gsap.utils.toArray('.reveal').forEach(el => gsap.to(el, { opacity: 1, y: 0, duration: .8, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' } }));
+        gsap.utils.toArray('.reveal-left').forEach(el => gsap.to(el, { opacity: 1, x: 0, duration: .9, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' } }));
+        gsap.utils.toArray('.reveal-right').forEach(el => gsap.to(el, { opacity: 1, x: 0, duration: .9, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' } }));
+        gsap.utils.toArray('.bento-card').forEach((c, i) => ScrollTrigger.create({ trigger: c, start: 'top 90%', onEnter: () => gsap.to(c, { opacity: 1, y: 0, scale: 1, duration: .6, delay: i * .08, ease: 'power3.out' }) }));
+        gsap.utils.toArray('.accordion-item').forEach((item, i) => ScrollTrigger.create({ trigger: item, start: 'top 92%', onEnter: () => gsap.to(item, { opacity: 1, y: 0, duration: .5, delay: i * .1, ease: 'power3.out' }) }));
+        const navLinks = document.querySelectorAll('.nav-links a');
+        window.addEventListener('scroll', () => { let cur = ''; document.querySelectorAll('section[id]').forEach(s => { if (window.scrollY >= s.offsetTop - 130) cur = s.id; }); navLinks.forEach(a => a.style.fontWeight = a.getAttribute('href') === '#' + cur ? '800' : '600'); });
+    </script>
+</body>
+
+</html>
