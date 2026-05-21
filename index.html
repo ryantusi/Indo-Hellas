@@ -2586,7 +2586,7 @@
                 <div class="flyer-divider"></div>
                 <div class="flyer-certs">ISO 9001 · ISO 22000 · ISO 14001 · ISO 45001 · HACCP · IMPA · ShipServe ·
                     Procureship</div>
-                <div><button class="flyer-download-btn"><span class="material-symbols-outlined"
+                <div><button class="flyer-download-btn" id="downloadFlyerBtn"><span class="material-symbols-outlined"
                             style="font-size:17px">download</span>Download PDF Flyer</button></div>
             </div>
         </div>
@@ -3256,12 +3256,14 @@
                 <div>
                     <span class="footer-col-title">Global Ports</span>
                     <div class="footer-ports">
-                        <span>Chennai</span><span>Suez Canal</span>
-                        <span>Singapore</span><span>Rotterdam</span>
-                        <span>Dubai</span><span>Hamburg</span>
+                        <span>Piraeus</span><span>Suez Canal</span>
+                        <span>Singapore</span><span>Istanbul</span>
+                        <span>Dubai</span><span>Chennai</span>
                         <span>Colombo</span><span>Port Said</span>
-                        <span>Mumbai</span><span>Houston</span>
-                        <span style="grid-column:span 2;opacity:.35;font-style:italic">& Other Major Ports</span>
+                        <span>Hamburg</span><span>Houston</span>
+                        <span>Shanghai</span><span>Busan</span>
+                        <span>Rotterdam</span><span>Cape Town</span>
+                        <span style="grid-column:span 2;opacity:.35;font-style:italic">& Many Other Ports</span>
                     </div>
                 </div>
             </div>
@@ -3274,6 +3276,18 @@
     </footer>
 
     <script>
+        // ─── FLYER DOWNLOAD ───────────────────────────────────
+        document.getElementById('downloadFlyerBtn').addEventListener('click', () => {
+            const link = document.createElement('a');
+
+            link.href = './assets/Flyer.jpeg'; // your PDF path
+            link.download = 'IndoHellas-Flyer.jpeg';
+
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+    
         // ─── CERTIFICATES ─────────────────────────────────────────────────
         // Map cert name → filename (add your actual filenames here)
         const certFiles = {
