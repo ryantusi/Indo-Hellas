@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>INDO HELLAS | General Marine Suppliers - World Wide</title>
-    <link rel="icon" type="image/png" href="logo.png" />
+    <link rel="icon" type="image/png" href="./assets/logo.png" />
     <link
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Hanken+Grotesk:wght@300;400;600;700&display=swap"
         rel="stylesheet" />
@@ -110,6 +110,14 @@
         @media(max-width:768px) {
             .container {
                 padding: 0 20px
+            }
+
+            #cursor {
+                display: none;
+            }
+
+            #cursor-ring {
+                display: none;
             }
         }
 
@@ -498,7 +506,12 @@
 
         @media(max-width:900px) {
             .hero-logo-wrap {
-                display: none
+                margin-bottom: 3vh;
+            }
+
+            .hero-logo-wrap img {
+                width: clamp(105px, 14vw, 165px);
+                height: clamp(105px, 14vw, 165px);
             }
         }
 
@@ -619,6 +632,12 @@
 
             100% {
                 top: 100%
+            }
+        }
+
+        @media(max-width:500px) {
+            .scroll-indicator {
+                bottom: 54%;
             }
         }
 
