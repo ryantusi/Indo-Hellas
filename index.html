@@ -7,7 +7,7 @@
     <title>INDO HELLAS | General Marine Suppliers - World Wide</title>
     <link rel="icon" type="image/png" href="./assets/logo.png" />
     <link
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Hanken+Grotesk:wght@300;400;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Hanken+Grotesk:wght@300;400;600;700&family=Manrope:wght@400;500;700&display=swap"
         rel="stylesheet" />
     <link
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
@@ -15,6 +15,195 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     <style>
+        /* ─── PRELOADER ──────────────────────────────────────────────────── */
+        @keyframes pulse-gentle {
+
+            0%,
+            100% {
+                opacity: 0.85;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+        }
+
+        .animate-pulse-gentle {
+            animation: pulse-gentle 4s ease-in-out infinite;
+        }
+
+        .loading-line {
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fade-in {
+            opacity: 0;
+            animation: preloaderFadeIn 1.5s ease-out forwards;
+        }
+
+        @keyframes preloaderFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        #preloader {
+            position: fixed;
+            inset: 0;
+            background-color: #f8f9fa;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: opacity 0.7s ease, visibility 0.7s ease;
+        }
+
+        #preloader.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        #preloader .ambient-bg {
+            position: absolute;
+            inset: 0;
+            opacity: 0.1;
+            pointer-events: none;
+            background: radial-gradient(circle at center, rgba(10, 29, 55, 0.05) 0%, transparent 70%);
+        }
+
+        #preloader .brand-mark {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 10;
+        }
+
+        #preloader .anchor-icon {
+            font-size: 80px;
+            color: #0a1d37;
+            margin-bottom: 40px;
+            font-variation-settings: 'FILL' 0, 'wght' 200;
+            transition: 0.8s;
+        }
+
+        @media (min-width: 768px) {
+            #preloader .anchor-icon {
+                font-size: 100px;
+            }
+        }
+
+        #preloader .brand-title {
+            font-family: 'Hanken Grotesk', sans-serif;
+            font-size: clamp(28px, 5vw, 44px);
+            font-weight: 800;
+            color: #0a1d37;
+            letter-spacing: -0.02em;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        #preloader .brand-sub {
+            font-family: 'Manrope', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: #3b82f6;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        #preloader .progress-wrap {
+            position: absolute;
+            bottom: 20vh;
+            width: 100%;
+            max-width: 240px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        @media (min-width: 768px) {
+            #preloader .progress-wrap {
+                max-width: 320px;
+            }
+        }
+
+        #preloader .counter-text {
+            font-family: 'Manrope', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: #3b82f6;
+        }
+
+        #preloader .progress-track {
+            width: 100%;
+            height: 2px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 9999px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #preloader .progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: #0a1d37;
+            box-shadow: 0 0 10px rgba(10, 29, 55, 0.2);
+            width: 0%;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #preloader .preloader-footer {
+            position: absolute;
+            bottom: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: 'Manrope', sans-serif;
+            font-size: 10px;
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+        }
+
+        #preloader .preloader-footer .by-text {
+            color: #44474d;
+        }
+
+        #preloader .preloader-footer .presence-text {
+            color: #7d5c3f;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+
+        /* ─── MAIN SITE — hidden until preloader done ───────────── */
+        #main-site {
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        #main-site.visible {
+            opacity: 1;
+        }
+
+        /* ─── RESET & BASE ───────────────────────────────────────────────── */
         *,
         *::before,
         *::after {
@@ -112,12 +301,9 @@
                 padding: 0 20px
             }
 
-            #cursor {
-                display: none;
-            }
-
+            #cursor,
             #cursor-ring {
-                display: none;
+                display: none
             }
         }
 
@@ -391,7 +577,7 @@
             }
         }
 
-        /* ── HERO ─────────────────────────────────────────────── */
+        /* HERO */
         #hero {
             position: relative;
             height: 100vh;
@@ -426,7 +612,6 @@
             padding-top: 10vh
         }
 
-        /* Hero top row: headline left + logo right */
         .hero-top-row {
             display: flex;
             align-items: center;
@@ -459,7 +644,6 @@
             color: var(--blue-pale)
         }
 
-        /* Hero logo — right side, same visual height as headline */
         .hero-logo-wrap {
             flex-shrink: 0;
             opacity: 0;
@@ -473,10 +657,9 @@
             height: clamp(140px, 14vw, 220px);
             object-fit: contain;
             filter: drop-shadow(0 8px 32px rgba(10, 22, 40, 0.5)) drop-shadow(0 0 60px rgba(184, 217, 245, 0.15));
-            border-radius: 50%;
+            border-radius: 50%
         }
 
-        /* Fallback circle shown if logo.png isn't available */
         .hero-logo-placeholder {
             width: clamp(140px, 14vw, 220px);
             height: clamp(140px, 14vw, 220px);
@@ -487,7 +670,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 8px
         }
 
         .hero-logo-placeholder span {
@@ -506,12 +689,12 @@
 
         @media(max-width:900px) {
             .hero-logo-wrap {
-                margin-bottom: 3vh;
+                margin-bottom: 3vh
             }
 
             .hero-logo-wrap img {
                 width: clamp(105px, 14vw, 165px);
-                height: clamp(105px, 14vw, 165px);
+                height: clamp(105px, 14vw, 165px)
             }
         }
 
@@ -637,7 +820,7 @@
 
         @media(max-width:500px) {
             .scroll-indicator {
-                bottom: 54%;
+                bottom: 54%
             }
         }
 
@@ -926,7 +1109,6 @@
             opacity: .85
         }
 
-        /* CERT MODAL */
         .cert-modal-box {
             max-width: 700px
         }
@@ -1999,10 +2181,6 @@
             animation-delay: 1.0s
         }
 
-        .map-dot:nth-child(8)::before {
-            animation-delay: 1.4s
-        }
-
         .map-dot-tooltip {
             position: absolute;
             bottom: calc(100% + 8px);
@@ -2040,7 +2218,7 @@
             }
         }
 
-        /* ── CERTIFICATES ─────────────────────────────────────── */
+        /* CERTIFICATES */
         #certificates {
             padding: 0;
             background: var(--off-white);
@@ -2492,20 +2670,22 @@
             opacity: 0;
             transform: translateX(40px)
         }
-        
-        /* ── THE PRESENCE CREDIT FOOTER ───────────────────────── */
+
+        /* THE PRESENCE CREDIT FOOTER */
         #presence-credit {
             background: var(--surface-subtle);
             padding: 5px 0;
             border-top: 1px solid var(--border);
             position: relative;
-            overflow: hidden;
+            overflow: hidden
         }
+
         .presence-inner {
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: center
         }
+
         .presence-link {
             display: inline-flex;
             align-items: center;
@@ -2514,27 +2694,30 @@
             cursor: none;
             padding: 6px 14px;
             border-radius: 4px;
-            transition: gap 0.5s cubic-bezier(0.16,1,0.3,1);
-            position: relative;
+            transition: gap 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative
         }
-        .presence-link:hover { gap: 16px; }
 
-        /* Credit text */
+        .presence-link:hover {
+            gap: 16px
+        }
+
         .presence-text {
             font-family: 'Hanken Grotesk', sans-serif;
             font-size: 10px;
             font-weight: 400;
             letter-spacing: 0.14em;
             color: var(--text-light);
-            transition: color 0.5s, letter-spacing 0.5s cubic-bezier(0.16,1,0.3,1);
+            transition: color 0.5s, letter-spacing 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             white-space: nowrap;
-            text-transform: uppercase;
+            text-transform: uppercase
         }
+
         .presence-link:hover .presence-text {
             color: rgba(92, 40, 1, 0.884);
-            letter-spacing: 0.18em;
+            letter-spacing: 0.18em
         }
-        
+
         .presence-brand {
             font-family: 'Montserrat', sans-serif;
             font-size: 10px;
@@ -2542,77 +2725,107 @@
             letter-spacing: 0.28em;
             color: var(--text-muted);
             text-transform: uppercase;
-            transition: color 0.5s, letter-spacing 0.5s cubic-bezier(0.16,1,0.3,1);
-            white-space: nowrap;
+            transition: color 0.5s, letter-spacing 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            white-space: nowrap
         }
+
         .presence-link:hover .presence-brand {
             color: rgba(92, 40, 1, 0.884);
-            letter-spacing: 0.34em;
+            letter-spacing: 0.34em
         }
+
         .presence-logo {
             width: 18px;
             height: 18px;
             flex-shrink: 0;
             opacity: 0.45;
-            transition: opacity 0.5s, transform 0.5s cubic-bezier(0.16,1,0.3,1), filter 0.5s;
+            transition: opacity 0.5s, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s;
             transform: translateX(0) scale(1);
             filter: none;
-            object-fit: contain;
+            object-fit: contain
         }
+
         .presence-link:hover .presence-logo {
             opacity: 1;
             transform: translateX(3px) scale(1.15);
-            filter: drop-shadow(0 2px 6px rgba(10,22,40,0.18));
+            filter: drop-shadow(0 2px 6px rgba(10, 22, 40, 0.18))
         }
+
         .presence-link::after {
             content: '';
             position: absolute;
-            bottom: 0; left: 50%;
+            bottom: 0;
+            left: 50%;
             transform: translateX(-50%) scaleX(0);
-            width: 80%; height: 1px;
+            width: 80%;
+            height: 1px;
             background: rgba(92, 40, 1, 0.223);
-            transition: transform 0.6s cubic-bezier(0.16,1,0.3,1);
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)
         }
-        .presence-link:hover::after { transform: translateX(-50%) scaleX(1); }
 
-        @media (max-width: 768px) {
+        .presence-link:hover::after {
+            transform: translateX(-50%) scaleX(1)
+        }
+
+        @media(max-width:768px) {
             .presence-inner {
                 flex-direction: column;
-                gap: 4px;
+                gap: 4px
             }
+
             .presence-text {
                 color: var(--text-muted);
                 letter-spacing: 0.1em;
                 font-size: 10px;
                 white-space: normal;
-                text-align: center;
+                text-align: center
             }
+
             .presence-brand {
                 color: var(--text-primary);
-                letter-spacing: 0.24em;
+                letter-spacing: 0.24em
             }
+
             .presence-logo {
                 opacity: 1;
                 transform: none;
-                filter: none;
+                filter: none
             }
+
             .presence-link {
                 gap: 8px;
                 padding: 2px 10px;
                 cursor: auto;
-            }
-            .presence-link:hover { gap: 8px; }
-            .presence-link:hover .presence-text { color: var(--text-muted); letter-spacing: 0.1em; }
-            .presence-link:hover .presence-brand { color: var(--text-primary); letter-spacing: 0.24em; }
-            .presence-link:hover .presence-logo { opacity: 1; transform: none; filter: none; }
-            .presence-link::after { display: none; }
-            #presence-credit {
-                padding: 10px 0 8px;
-            }
-            /* Full-width visible underline replacing the hover line */
-            .presence-link {
                 border-bottom: 1px solid rgba(92, 40, 1, 0.4);
-                border-radius: 0;
+                border-radius: 0
+            }
+
+            .presence-link:hover {
+                gap: 8px
+            }
+
+            .presence-link:hover .presence-text {
+                color: var(--text-muted);
+                letter-spacing: 0.1em
+            }
+
+            .presence-link:hover .presence-brand {
+                color: var(--text-primary);
+                letter-spacing: 0.24em
+            }
+
+            .presence-link:hover .presence-logo {
+                opacity: 1;
+                transform: none;
+                filter: none
+            }
+
+            .presence-link::after {
+                display: none
+            }
+
+            #presence-credit {
+                padding: 10px 0 8px
             }
         }
     </style>
@@ -2620,799 +2833,886 @@
 
 <body>
 
-    <div id="cursor"></div>
-    <div id="cursor-ring"></div>
-    <div id="progress"></div>
-
-    <!-- CONTACT MODAL -->
-    <div class="modal-overlay" id="contact-modal">
-        <div class="modal-box">
-            <button class="modal-close" onclick="closeModal('contact-modal')"><span class="material-symbols-outlined"
-                    style="font-size:17px">close</span></button>
-            <div class="modal-title">Contact Us</div>
-            <div class="modal-subtitle">Indo Hellas — General Marine Suppliers · World Wide</div>
-            <div class="modal-contact-item">
-                <div class="modal-contact-icon"><span class="material-symbols-outlined">location_on</span></div>
-                <div>
-                    <div class="modal-contact-label">Office Address</div>
-                    <div class="modal-contact-value">No. 95, Linghi Chetty Street,<br>1st Floor, Suite No. 7,
-                        Mannady,<br>Chennai – 600 001, India</div>
-                </div>
+    <!-- ─── PRELOADER ──────────────────────────────────────────── -->
+    <div id="preloader">
+        <div class="ambient-bg"></div>
+        <div class="brand-mark">
+            <div class="animate-pulse-gentle">
+                <img class="anchor-icon"  id="preloader-anchor" src="./assets/logo.png" alt="Logo" width="100" />
             </div>
-            <div class="modal-contact-item">
-                <div class="modal-contact-icon"><span class="material-symbols-outlined">call</span></div>
-                <div>
-                    <div class="modal-contact-label">Phone</div>
-                    <div class="modal-contact-value">
-                        <a href="tel:+914442167484">+91 444 216 7484</a><br>
-                        <a href="tel:+914442167485">+91 444 216 7485</a>
-                    </div>
-                </div>
+            <div class="fade-in" style="animation-delay:0.3s;text-align:center">
+                <div class="brand-title">INDO HELLAS</div>
+                <div class="brand-sub">General Marine Suppliers</div>
             </div>
-            <div class="modal-contact-item">
-                <div class="modal-contact-icon"><span class="material-symbols-outlined">alternate_email</span></div>
-                <div>
-                    <div class="modal-contact-label">Email</div>
-                    <div class="modal-contact-value">
-                        <a href="mailto:technical@indohellas.in">technical@indohellas.in</a><br>
-                        <a href="mailto:indohellas@indohellas.in">indohellas@indohellas.in</a><br>
-                        <a href="mailto:supply@indohellas.in">supply@indohellas.in</a><br>
-                        <a href="mailto:info@indohellas.in">info@indohellas.in</a><br>
-                        <a href="mailto:accounts@indohellas.in">accounts@indohellas.in</a><br>
-                        <a href="mailto:indohellas@gmail.com">indohellas@gmail.com</a><br>
-                        <a href="mailto:supplyindohellas@gmail.com">supplyindohellas@gmail.com</a>
-                    </div>
-                </div>
+        </div>
+        <div class="progress-wrap fade-in" style="animation-delay:0.8s">
+            <div class="counter-text" id="preloader-counter">0%</div>
+            <div class="progress-track">
+                <div class="progress-bar" id="preloader-bar"></div>
             </div>
-            <div class="modal-contact-item">
-                <div class="modal-contact-icon"><span class="material-symbols-outlined">language</span></div>
-                <div>
-                    <div class="modal-contact-label">Website</div>
-                    <div class="modal-contact-value">
-                        <a href="https://www.indohellasindia.com" target="_blank">www.indohellasindia.com</a><br>
-                        <a href="https://www.indohellas.in" target="_blank">www.indohellas.in</a>
-                    </div>
-                </div>
+        </div>
+        <div class="preloader-footer fade-in" style="animation-delay:1.2s">
+            <div class="by-text">Website crafted by</div>
+            <div class="presence-text" style="color:#7d5c3f;font-weight:700;margin-top:4px;letter-spacing:0.3em">The
+                Presence</div>
+            <div class="animate-pulse-gentle">
+                <img class="anchor-icon" id="preloader-anchor" src="./assets/ThePresence.png" alt="Logo" width="20" style="margin-top:3px;"/>
             </div>
         </div>
     </div>
 
-    <!-- FLYER MODAL -->
-    <div class="modal-overlay" id="flyer-modal">
-        <div class="modal-box flyer-box">
-            <button class="modal-close" onclick="closeModal('flyer-modal')"><span class="material-symbols-outlined"
-                    style="font-size:17px">close</span></button>
-            <div class="modal-title">Company Flyer</div>
-            <div class="modal-subtitle">Indo Hellas — General Marine Suppliers</div>
-            <div class="flyer-content">
-                <div class="flyer-logo">INDO HELLAS</div>
-                <div class="flyer-tagline">General Marine Suppliers · Est. 1996 · Chennai</div>
-                <div class="flyer-divider"></div>
-                <div class="flyer-services-grid">
-                    <div class="flyer-service-item"><span class="material-symbols-outlined">restaurant</span> Provisions
-                        & Bonded</div>
-                    <div class="flyer-service-item"><span class="material-symbols-outlined">anchor</span> Deck Stores
-                    </div>
-                    <div class="flyer-service-item"><span class="material-symbols-outlined">settings</span> Engine
-                        Stores</div>
-                    <div class="flyer-service-item"><span class="material-symbols-outlined">electrical_services</span>
-                        Electrical Stores</div>
-                    <div class="flyer-service-item"><span class="material-symbols-outlined">bed</span> Cabin Stores
-                    </div>
-                    <div class="flyer-service-item"><span class="material-symbols-outlined">medical_services</span>
-                        Medical Stores</div>
-                    <div class="flyer-service-item"><span class="material-symbols-outlined">construction</span>
-                        Technical & Welding</div>
-                    <div class="flyer-service-item"><span class="material-symbols-outlined">emergency</span>
-                        Pyrotechnics</div>
-                </div>
-                <div class="flyer-divider"></div>
-                <div class="flyer-certs">ISO 9001 · ISO 22000 · ISO 14001 · ISO 45001 · HACCP · IMPA · ShipServe ·
-                    Procureship</div>
-                <div><button class="flyer-download-btn" id="downloadFlyerBtn"><span class="material-symbols-outlined"
-                            style="font-size:17px">download</span>Download PDF Flyer</button></div>
-            </div>
-        </div>
-    </div>
+    <!-- ─── MAIN SITE ──────────────────────────────────────────── -->
+    <div id="main-site">
 
-    <!-- CERTIFICATE VIEW MODAL -->
-    <div class="modal-overlay" id="cert-modal">
-        <div class="modal-box cert-modal-box">
-            <button class="modal-close" onclick="closeModal('cert-modal')"><span class="material-symbols-outlined"
-                    style="font-size:17px">close</span></button>
-            <div class="modal-title" id="cert-modal-title">Certificate</div>
-            <div class="modal-subtitle" id="cert-modal-sub">Indo Hellas — Certification Document</div>
-            <div class="cert-frame" id="cert-frame">
-                <img id="cert-frame-img" src="" alt="Certificate">
-                <div class="cert-frame-placeholder" id="cert-frame-placeholder">
-                    <span class="material-symbols-outlined">workspace_premium</span>
-                    <p>Certificate image will be displayed here once uploaded.</p>
-                    <small>Add your certificate file as: <span id="cert-filename-hint">cert-name.png</span></small>
-                </div>
-            </div>
-        </div>
-    </div>
+        <div id="cursor"></div>
+        <div id="cursor-ring"></div>
+        <div id="progress"></div>
 
-    <!-- NAVBAR -->
-    <header id="navbar">
-        <div class="container nav-inner">
-            <a href="#" class="nav-logo-group">
-                <div class="nav-logo-placeholder">
-                    <img src="./assets/logo.png" id="nav-logo-img" alt="Indo Hellas Logo" onerror="this.style.display='none'">
-                </div>
-                <span class="nav-logo-text">INDO HELLAS</span>
-            </a>
-            <nav>
-                <ul class="nav-links">
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#services">Services</a></li>
-                    <li><a href="#why-us">Why Us</a></li>
-                    <li><a href="#network">Network</a></li>
-                    <li><a href="#certificates">Certificates</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
-            <div style="display:flex;align-items:center;gap:14px">
-                <button class="nav-cta" onclick="openModal('contact-modal')">Contact Us</button>
-                <button class="hamburger" id="hamburger"
-                    aria-label="Menu"><span></span><span></span><span></span></button>
-            </div>
-        </div>
-    </header>
-
-    <div id="mobile-menu">
-        <a href="#about">About</a><a href="#services">Services</a><a href="#why-us">Why Us</a>
-        <a href="#network">Network</a><a href="#certificates">Certificates</a><a href="#contact">Contact</a>
-    </div>
-
-    <!-- HERO -->
-    <section id="hero" data-theme="dark">
-        <video id="hero-video" autoplay muted loop playsinline>
-            <source src="./assets/hero.mp4" type="video/mp4">
-            <source src="hero.webm" type="video/webm">
-        </video>
-        <img id="hero-fallback"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrNO-0KyBH3fEk5mzTogoee0q0Xnhl-HcXmtCtKolqvOh1mLcz-qbtlM7MIOD6_wcW9YjJr3MlOYfFIKbzHs3Aj5yaLXwYgsg01RvEJDhkBukDUvnEbEnHTxcTHcpH06j7VYgO2nAP0UmKyqUQCj0jbLX9w0UEnTJYuibdpQ0IB_zZCNCrK0B5SeHvMLepYKRD4oWoVMKOZ1EOGuaX0wM-AwSok_kYEQO_Z-HUPNfg94EWoHc2r3HWD3Z3SFNlYZ95ZnJuMhD-d9I"
-            alt="Ship at sea">
-        <div class="hero-overlay"></div>
-        <div class="container hero-content">
-
-            <!-- Headline + Logo side by side -->
-            <div class="hero-top-row">
-                <h1 class="hero-headline">
-                    Welcome to<br>
-                    <span class="accent">Indo Hellas</span><br>
-                    World Wide.
-                </h1>
-                <div class="hero-logo-wrap" id="hero-logo-wrap">
-                    <!-- Real logo — swap src to your logo.png -->
-                    <img src="./assets/logo.png" alt="Indo Hellas Logo" id="hero-logo-img"
-                        onerror="this.style.display='none';document.getElementById('hero-logo-fallback').style.display='flex'">
-                    <!-- Fallback shown if logo.png not found -->
-                    <div class="hero-logo-placeholder" id="hero-logo-fallback" style="display:none">
-                        <span class="material-symbols-outlined">sailing</span>
-                        <p>Indo Hellas</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="hero-sub-row">
-                <div class="hero-sub-box outline">One Stop Shop</div>
-                <div class="hero-sub-box filled">General Marine Suppliers</div>
-            </div>
-            <div class="hero-bottom">
-                <div class="hero-stat">
-                    <h3>Marine Services</h3>
-                    <p>We provide high quality marine services to clients around the world ensuring excellence and
-                        reliability across every region we serve.</p>
-                </div>
-                <div class="hero-stat">
-                    <h3>360° Support</h3>
-                    <p>We are committed to being at your service whenever you need us, ready to offer assistance and
-                        support at any time.</p>
-                </div>
-            </div>
-        </div>
-        <div class="scroll-indicator" id="scroll-indicator"><span>Scroll</span>
-            <div class="scroll-line"></div>
-        </div>
-    </section>
-
-    <!-- FAB -->
-    <div class="fab-container">
-        <button class="fab" onclick="openModal('flyer-modal')">
-            <span class="fab-label">View Flyer</span>
-            <div class="fab-icon"><span class="material-symbols-outlined">description</span></div>
-        </button>
-    </div>
-
-    <!-- ABOUT -->
-    <section id="about" data-theme="light">
-        <div class="container">
-            <div class="about-section-header reveal">
-                <span class="section-tag about-section-tag">Who We Are</span>
-                <h2 class="about-section-title">About Us</h2>
-                <p class="about-section-lead">A Legacy of Trust. A Commitment to Excellence. A Global Marine Partner You
-                    Can Rely On. For more than four decades, INDO HELLAS has stood at the forefront of the maritime
-                    industry — trusted by some of the most reputable shipowners and operators across the world.</p>
-            </div>
-            <div class="about-tabs reveal">
-                <button class="about-tab active" onclick="switchAboutTab(0)">Our Legacy</button>
-                <button class="about-tab" onclick="switchAboutTab(1)">Our Journey</button>
-                <button class="about-tab" onclick="switchAboutTab(2)">Our Commitment</button>
-            </div>
-            <div class="about-panel active" id="about-panel-0">
-                <div class="about-grid">
+        <!-- CONTACT MODAL -->
+        <div class="modal-overlay" id="contact-modal">
+            <div class="modal-box">
+                <button class="modal-close" onclick="closeModal('contact-modal')"><span
+                        class="material-symbols-outlined" style="font-size:17px">close</span></button>
+                <div class="modal-title">Contact Us</div>
+                <div class="modal-subtitle">Indo Hellas — General Marine Suppliers · World Wide</div>
+                <div class="modal-contact-item">
+                    <div class="modal-contact-icon"><span class="material-symbols-outlined">location_on</span></div>
                     <div>
-                        <span class="section-tag about-sub-tag reveal">Our Legacy</span>
-                        <h3 class="about-sub-headline reveal">A Legacy of Reliability in the Global Marine Industry</h3>
-                        <p class="about-body reveal">For more than four decades, INDO HELLAS has been a name synonymous
-                            with trust, efficiency, and excellence in ship supply services. Founded in 1996 in Chennai
-                            (Madras), we began with a mission to provide world-class ship chandling solutions to vessels
-                            operating across India.</p>
-                        <p class="about-body reveal">What started as a local operation has grown into a globally
-                            connected marine service provider, supporting ships across major and minor Indian ports —
-                            and expanding internationally since 2018. Today, INDO HELLAS stands as one of the oldest and
-                            most reputed marine suppliers, trusted by shipowners, fleet managers, and maritime
-                            professionals worldwide.</p>
-                        <div class="about-feature reveal">
-                            <div class="feature-icon"><span class="material-symbols-outlined">warehouse</span></div>
-                            <div>
-                                <div class="feature-title">Our Facilities</div>
-                                <p class="feature-desc">Our own 600 sq mtr warehouse, 2000 sq mtr workspace, located
-                                    just 1 km from the port — backed by 16 dedicated employees who go the extra mile
-                                    every day.</p>
-                            </div>
-                        </div>
-                        <div class="about-feature reveal">
-                            <div class="feature-icon"><span class="material-symbols-outlined">handshake</span></div>
-                            <div>
-                                <div class="feature-title">More Than Just Suppliers</div>
-                                <p class="feature-desc">We are partners in your vessel's journey, ensuring smooth
-                                    operations from port to port, ocean to ocean — with precision, care, and dedication
-                                    at every step.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="about-images reveal-right">
-                        <img class="about-img"
-                            src="./assets/about1.png"
-                            alt="Marine supply">
-                        <img class="about-img" style="margin-top:0"
-                            src="./assets/about2.jpg"
-                            alt="Port">
+                        <div class="modal-contact-label">Office Address</div>
+                        <div class="modal-contact-value">No. 95, Linghi Chetty Street,<br>1st Floor, Suite No. 7,
+                            Mannady,<br>Chennai – 600 001, India</div>
                     </div>
                 </div>
-            </div>
-            <div class="about-panel" id="about-panel-1">
-                <div class="journey-layout">
-                    <div class="journey-image-wrap reveal-left">
-                        <img class="journey-img"
-                            src="./assets/about3.png"
-                            alt="Our journey">
-                        <div class="journey-badge">
-                            <div class="journey-badge-num">30+</div>
-                            <div class="journey-badge-label">Years of Excellence</div>
-                        </div>
-                    </div>
-                    <div class="reveal">
-                        <span class="section-tag about-sub-tag">Our Journey & Experience</span>
-                        <h3 class="about-sub-headline">Continuous Growth, Consistent Excellence</h3>
-                        <p class="about-body">With over 30 years of industry experience, INDO HELLAS has built a strong
-                            reputation for quality, ethics, and consistency. Our journey reflects continuous growth —
-                            driven by an unwavering commitment to our clients and the maritime community.</p>
-                        <div class="journey-milestones">
-                            <div class="milestone"><span class="milestone-year">1996</span>
-                                <div class="milestone-dot"></div>
-                                <div class="milestone-text"><strong>Founded in Chennai</strong>Started with a mission to
-                                    provide world-class ship chandling solutions across India.</div>
-                            </div>
-                            <div class="milestone"><span class="milestone-year">2000</span>
-                                <div class="milestone-dot"></div>
-                                <div class="milestone-text"><strong>Pan-India Expansion</strong>Extended operations to
-                                    cover all major and minor Indian ports.</div>
-                            </div>
-                            <div class="milestone"><span class="milestone-year">2010s</span>
-                                <div class="milestone-dot"></div>
-                                <div class="milestone-text"><strong>International Relationships</strong>Built long-term
-                                    partnerships with global shipping companies spanning 1 to 4 decades.</div>
-                            </div>
-                            <div class="milestone"><span class="milestone-year">2018</span>
-                                <div class="milestone-dot"></div>
-                                <div class="milestone-text"><strong>Global Operations Launched</strong>Established
-                                    international presence, supported by a powerful global supply chain network.</div>
-                            </div>
-                            <div class="milestone"><span class="milestone-year">Today</span>
-                                <div class="milestone-dot"></div>
-                                <div class="milestone-text"><strong>World-Class Marine Partner</strong>Recognised as one
-                                    of the oldest and most reputed marine suppliers trusted worldwide.</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="about-panel" id="about-panel-2">
-                <div class="commitment-layout">
-                    <div class="reveal">
-                        <span class="section-tag about-sub-tag">Our Commitment & Values</span>
-                        <h3 class="about-sub-headline">Delivering Global Quality with Local Care</h3>
-                        <p class="commitment-intro">INDO HELLAS is committed to delivering world-class ship supply
-                            services with integrity, precision, and care. We cooperate with reputable shipping companies
-                            across the world, coordinating through regional hubs to deliver supplies wherever and
-                            whenever required.</p>
-                        <div class="commitment-list">
-                            <div class="commitment-item">
-                                <div class="commitment-check"><span class="material-symbols-outlined">check</span></div>
-                                <div class="commitment-item-text"><strong>Quality products at competitive
-                                        prices</strong> — sourced from trusted, certified suppliers worldwide.</div>
-                            </div>
-                            <div class="commitment-item">
-                                <div class="commitment-check"><span class="material-symbols-outlined">check</span></div>
-                                <div class="commitment-item-text"><strong>Fast and dependable deliveries</strong> —
-                                    engineered logistics to meet any port schedule.</div>
-                            </div>
-                            <div class="commitment-item">
-                                <div class="commitment-check"><span class="material-symbols-outlined">check</span></div>
-                                <div class="commitment-item-text"><strong>24/7/365 operational support</strong> — our
-                                    team is always on standby, in every time zone.</div>
-                            </div>
-                            <div class="commitment-item">
-                                <div class="commitment-check"><span class="material-symbols-outlined">check</span></div>
-                                <div class="commitment-item-text"><strong>ISO-certified service</strong> — ISO 9001,
-                                    22000, 14001, 45001, and HACCP certified operations.</div>
-                            </div>
-                            <div class="commitment-item">
-                                <div class="commitment-check"><span class="material-symbols-outlined">check</span></div>
-                                <div class="commitment-item-text"><strong>Ethical business practices</strong> —
-                                    transparency and integrity form the backbone of every transaction.</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="commitment-cards reveal-right">
-                        <div class="commitment-card">
-                            <div class="commitment-card-icon"><span class="material-symbols-outlined">verified</span>
-                            </div>
-                            <div class="commitment-card-title">Certified Excellence</div>
-                            <div class="commitment-card-text">Every service we deliver is backed by international
-                                certifications — ensuring your vessel meets all compliance standards at every port of
-                                call.</div>
-                        </div>
-                        <div class="commitment-card">
-                            <div class="commitment-card-icon"><span
-                                    class="material-symbols-outlined">local_shipping</span></div>
-                            <div class="commitment-card-title">Supply Chain Strength</div>
-                            <div class="commitment-card-text">A robust global supply chain allows us to deliver
-                                provisions, technical stores, medical supplies, and more — from any major port, on time,
-                                every time.</div>
-                        </div>
-                        <div class="commitment-card">
-                            <div class="commitment-card-icon"><span
-                                    class="material-symbols-outlined">support_agent</span></div>
-                            <div class="commitment-card-title">Always Available</div>
-                            <div class="commitment-card-text">Our dedicated team works tirelessly to ensure timely,
-                                flawless service — responding instantly to your vessel's needs, regardless of the hour
-                                or location.</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="about-counter-strip">
-            <div class="container">
-                <div class="counter-grid">
-                    <div class="counter-item">
-                        <div class="counter-num" data-target="7000" data-suffix="+">0</div>
-                        <div class="counter-label">Ships Supplied</div>
-                    </div>
-                    <div class="counter-item">
-                        <div class="counter-num" data-target="100" data-suffix="+">0</div>
-                        <div class="counter-label">Ports Served</div>
-                    </div>
-                    <div class="counter-item">
-                        <div class="counter-num" data-target="15" data-suffix="+">0</div>
-                        <div class="counter-label">Countries Covered</div>
-                    </div>
-                    <div class="counter-item">
-                        <div class="counter-num" data-target="150" data-suffix="+">0</div>
-                        <div class="counter-label">Clients</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SERVICES -->
-    <section id="services" data-theme="dark">
-        <div class="container">
-            <div class="services-layout">
-                <div class="services-visual reveal-left">
-                    <div class="carousel-slide active"><img
-                            src="./assets/Provision-Stores.png"
-                            alt="Provisions"></div>
-                    <div class="carousel-slide"><img
-                            src="./assets/Deck-Stores.png"
-                            alt="Deck"></div>
-                    <div class="carousel-slide"><img
-                            src="./assets/Engine-Stores.png"
-                            alt="Engine"></div>
-                    <div class="carousel-slide"><img
-                            src="./assets/Electrical-Stores.png"
-                            alt="Electrical"></div>
-                    <div class="carousel-slide"><img
-                            src="./assets/Cabin-Stores.png"
-                            alt="Cabin"></div>
-                    <div class="carousel-slide"><img
-                            src="./assets/Medical-Stores.png"
-                            alt="Medical"></div>
-                    <div class="carousel-slide"><img
-                            src="./assets/Technical-Stores.png"
-                            alt="Technical"></div>
-                    <div class="carousel-slide"><img
-                            src="./assets/Ropes.png"
-                            alt="Ropes"></div>
-                    <div class="carousel-slide"><img
-                            src="./assets/Chemicals.png"
-                            alt="Chemicals"></div>
-                    <div class="carousel-slide"><img
-                            src="./assets/Bonded-Stores.png"
-                            alt="Bonded"></div>
-                    <div class="services-visual-overlay"></div>
-                    <div class="services-visual-label">
-                        <h3 id="carousel-label-title">Fresh Provisions & Bonded</h3>
-                        <p id="carousel-label-sub">High-quality food & bonded goods</p>
-                    </div>
-                    <div class="carousel-dots" id="carousel-dots"></div>
-                </div>
-                <div class="services-content">
-                    <div class="services-header">
-                        <span class="section-tag services-tag reveal">Our Expertise</span>
-                        <h2 class="services-headline reveal">Comprehensive Marine Supply</h2>
-                        <p class="services-intro reveal">As a full-service marine supplier, INDO HELLAS provides a
-                            complete range of provisions, stores, and operational solutions to keep your vessels running
-                            smoothly — anytime, anywhere.</p>
-                    </div>
-                    <div class="service-tabs reveal" id="service-tabs"></div>
-                    <div id="service-panels"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- WHY US -->
-    <section id="why-us" data-theme="light">
-        <div class="container">
-            <div class="why-header">
-                <h2 class="why-headline reveal">Why Global Fleets Trust Us</h2>
-                <p class="why-subhead reveal">Three decades of maritime heritage, ethical business practices, and a team
-                    that goes the extra mile — every single day.</p>
-            </div>
-            <div class="bento-row1">
-                <div class="bento-card bento-large reveal">
+                <div class="modal-contact-item">
+                    <div class="modal-contact-icon"><span class="material-symbols-outlined">call</span></div>
                     <div>
-                        <div class="bento-icon-wrap"><span class="material-symbols-outlined">history</span></div>
-                        <div class="bento-title">30+ Years of Maritime Legacy</div>
-                        <p class="bento-body">A relationship based on honesty for over 30 years. Since 1996, INDO HELLAS
-                            has navigated the complexities of international maritime trade, building a reputation for
-                            reliability that spans generations of seafarers worldwide.</p>
-                    </div>
-                    <div class="bento-tags"><span class="bento-tag">Reliable</span><span class="bento-tag">Since
-                            1996</span><span class="bento-tag">Experienced</span><span class="bento-tag">Trusted</span>
+                        <div class="modal-contact-label">Phone</div>
+                        <div class="modal-contact-value">
+                            <a href="tel:+914442167484">+91 444 216 7484</a><br>
+                            <a href="tel:+914442167485">+91 444 216 7485</a>
+                        </div>
                     </div>
                 </div>
-                <div class="bento-card bento-dark reveal">
-                    <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">public</span>
-                    <div class="bento-title">Global Reach, Local Expertise</div>
-                    <p class="bento-body">From India to international ports — a one-stop solution for all ship needs
-                        across major maritime locations worldwide.</p>
-                </div>
-            </div>
-            <div class="bento-row2">
-                <div class="bento-card bento-muted reveal">
-                    <div class="bento-icon-wrap"><span class="material-symbols-outlined">support_agent</span></div>
-                    <div class="bento-title">360° Support</div>
-                    <p class="bento-body">We work 24×7×365 to fulfil your vessel's needs at competitive prices. Always
-                        on call, always ready, in every time zone.</p>
-                </div>
-                <div class="bento-card bento-quality reveal">
-                    <div style="flex:1">
-                        <div class="bento-title">Quality Without Compromise</div>
-                        <p class="bento-body">Strict quality standards backed by ISO 9001, 22000, 14001, 45001, and
-                            HACCP certifications. Our long-standing reputation is built on trust, consistency, and
-                            reliability across every port we serve.</p>
+                <div class="modal-contact-item">
+                    <div class="modal-contact-icon"><span class="material-symbols-outlined">alternate_email</span></div>
+                    <div>
+                        <div class="modal-contact-label">Email</div>
+                        <div class="modal-contact-value">
+                            <a href="mailto:technical@indohellas.in">technical@indohellas.in</a><br>
+                            <a href="mailto:indohellas@indohellas.in">indohellas@indohellas.in</a><br>
+                            <a href="mailto:supply@indohellas.in">supply@indohellas.in</a><br>
+                            <a href="mailto:info@indohellas.in">info@indohellas.in</a><br>
+                            <a href="mailto:accounts@indohellas.in">accounts@indohellas.in</a><br>
+                            <a href="mailto:indohellas@gmail.com">indohellas@gmail.com</a><br>
+                            <a href="mailto:supplyindohellas@gmail.com">supplyindohellas@gmail.com</a>
+                        </div>
                     </div>
-                    <div class="bento-quality-icon"><span class="material-symbols-outlined">verified_user</span></div>
                 </div>
-                <div class="bento-card reveal">
-                    <div class="bento-icon-wrap"><span class="material-symbols-outlined">groups</span></div>
-                    <div class="bento-title">Dedicated Team</div>
-                    <p class="bento-body">Our 16 team members work hard every day and go the extra mile to fulfil your
-                        ship's needs with precision and care.</p>
+                <div class="modal-contact-item">
+                    <div class="modal-contact-icon"><span class="material-symbols-outlined">language</span></div>
+                    <div>
+                        <div class="modal-contact-label">Website</div>
+                        <div class="modal-contact-value">
+                            <a href="https://www.indohellasindia.com" target="_blank">www.indohellasindia.com</a><br>
+                            <a href="https://www.indohellas.in" target="_blank">www.indohellas.in</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- NETWORK -->
-    <section id="network" data-theme="dark">
-        <div class="container">
-            <div class="network-grid">
-                <div>
-                    <span class="section-tag network-tag reveal">Our Reach</span>
-                    <h2 class="network-headline reveal">A Truly Global Network</h2>
-                    <p class="network-body reveal">We operate across seven continents, providing a unified supply chain
-                        solution that follows your fleet wherever it sails.</p>
-                    <div class="accordion-item reveal" data-accordion>
-                        <div class="accordion-header"><span class="accordion-title">Africa</span><span
-                                class="material-symbols-outlined accordion-icon">add</span></div>
-                        <div class="accordion-body">
-                            <div class="accordion-country-list"><span>Benin</span><span>Cameroon</span><span>Cape
-                                    Verde</span><span>Congo</span><span>Cote
-                                    d'Ivoire</span><span>Djibouti</span><span>Egypt</span><span>Gabon</span><span>Ghana</span><span>Guinea</span><span>Mauritius</span><span>Morocco</span><span>Mozambique</span><span>Namibia</span><span>Nigeria</span><span>Senegal</span><span>South
-                                    Africa</span><span>Tanzania</span><span>Togo</span><span>Tunisia</span></div>
+        <!-- FLYER MODAL -->
+        <div class="modal-overlay" id="flyer-modal">
+            <div class="modal-box flyer-box">
+                <button class="modal-close" onclick="closeModal('flyer-modal')"><span class="material-symbols-outlined"
+                        style="font-size:17px">close</span></button>
+                <div class="modal-title">Company Flyer</div>
+                <div class="modal-subtitle">Indo Hellas — General Marine Suppliers</div>
+                <div class="flyer-content">
+                    <div class="flyer-logo">INDO HELLAS</div>
+                    <div class="flyer-tagline">General Marine Suppliers · Est. 1996 · Chennai</div>
+                    <div class="flyer-divider"></div>
+                    <div class="flyer-services-grid">
+                        <div class="flyer-service-item"><span class="material-symbols-outlined">restaurant</span>
+                            Provisions & Bonded</div>
+                        <div class="flyer-service-item"><span class="material-symbols-outlined">anchor</span> Deck
+                            Stores</div>
+                        <div class="flyer-service-item"><span class="material-symbols-outlined">settings</span> Engine
+                            Stores</div>
+                        <div class="flyer-service-item"><span
+                                class="material-symbols-outlined">electrical_services</span> Electrical Stores</div>
+                        <div class="flyer-service-item"><span class="material-symbols-outlined">bed</span> Cabin Stores
                         </div>
+                        <div class="flyer-service-item"><span class="material-symbols-outlined">medical_services</span>
+                            Medical Stores</div>
+                        <div class="flyer-service-item"><span class="material-symbols-outlined">construction</span>
+                            Technical & Welding</div>
+                        <div class="flyer-service-item"><span class="material-symbols-outlined">emergency</span>
+                            Pyrotechnics</div>
                     </div>
-                    <div class="accordion-item reveal" data-accordion>
-                        <div class="accordion-header"><span class="accordion-title">Asia</span><span
-                                class="material-symbols-outlined accordion-icon">add</span></div>
-                        <div class="accordion-body">
-                            <div class="accordion-country-list"><span>Bangladesh</span><span>China</span><span>Hong
-                                    Kong</span><span>India</span><span>Indonesia</span><span>Iran</span><span>Iraq</span><span>Israel</span><span>Japan</span><span>Jordan</span><span>Korea</span><span>Myanmar</span><span>Philippines</span><span>Singapore</span><span>Taiwan</span><span>Thailand</span><span>Turkey</span><span>Vietnam</span><span>Yemen</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="accordion-item reveal" data-accordion>
-                        <div class="accordion-header"><span class="accordion-title">Europe</span><span
-                                class="material-symbols-outlined accordion-icon">add</span></div>
-                        <div class="accordion-body">
-                            <div class="accordion-country-list">
-                                <span>Bulgaria</span><span>Denmark</span><span>Estonia</span><span>Finland</span><span>France</span><span>Georgia</span><span>Ireland</span><span>Italy</span><span>Latvia</span><span>Lithuania</span><span>Netherlands</span><span>Norway</span><span>Poland</span><span>Portugal</span><span>Romania</span><span>Russia</span><span>Spain</span><span>Ukraine</span><span>United
-                                    Kingdom</span></div>
-                        </div>
-                    </div>
-                    <div class="accordion-item reveal" data-accordion>
-                        <div class="accordion-header"><span class="accordion-title">North America</span><span
-                                class="material-symbols-outlined accordion-icon">add</span></div>
-                        <div class="accordion-body">
-                            <div class="accordion-country-list"><span>USA</span><span>Canada</span></div>
-                        </div>
-                    </div>
-                    <div class="accordion-item reveal" data-accordion>
-                        <div class="accordion-header"><span class="accordion-title">South America</span><span
-                                class="material-symbols-outlined accordion-icon">add</span></div>
-                        <div class="accordion-body">
-                            <div class="accordion-country-list">
-                                <span>Argentina</span><span>Brazil</span><span>Chile</span><span>Colombia</span><span>Ecuador</span><span>Peru</span><span>Venezuela</span><span>Uruguay</span><span>Suriname</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="accordion-item reveal" data-accordion>
-                        <div class="accordion-header"><span class="accordion-title">Central America</span><span
-                                class="material-symbols-outlined accordion-icon">add</span></div>
-                        <div class="accordion-body">
-                            <div class="accordion-country-list"><span>Costa
-                                    Rica</span><span>Guatemala</span><span>Mexico</span><span>Panama</span></div>
-                        </div>
-                    </div>
-                    <div class="accordion-item reveal" data-accordion>
-                        <div class="accordion-header"><span class="accordion-title">Caribbean Islands</span><span
-                                class="material-symbols-outlined accordion-icon">add</span></div>
-                        <div class="accordion-body">
-                            <div class="accordion-country-list"><span>Aruba</span><span>Curaçao</span><span>Dominican
-                                    Republic</span><span>Jamaica</span><span>Trinidad & Tobago</span></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="map-card reveal-right">
-                    <div class="map-visual">
-                        <img class="map-bg"
-                            src="./assets/network.png"
-                            alt="World map">
-                        <div class="map-dots">
-                            <div class="map-dot" style="top:55%;left:85%"></div>
-                            <div class="map-dot" style="top:38%;left:48%"></div>
-                            <div class="map-dot" style="top:45%;left:20%"></div>
-                            <div class="map-dot" style="top:65%;left:55%"></div>
-                            <div class="map-dot" style="top:44%;left:57%"></div>
-                            <div class="map-dot" style="top:50%;left:70%"></div>
-                            <div class="map-dot" style="top:58%;left:38%"></div>
-                        </div>
-                    </div>
+                    <div class="flyer-divider"></div>
+                    <div class="flyer-certs">ISO 9001 · ISO 22000 · ISO 14001 · ISO 45001 · HACCP · IMPA · ShipServe ·
+                        Procureship</div>
+                    <div><button class="flyer-download-btn" id="downloadFlyerBtn"><span
+                                class="material-symbols-outlined" style="font-size:17px">download</span>Download PDF
+                            Flyer</button></div>
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- CERTIFICATES -->
-    <section id="certificates" data-theme="light">
-        <div class="container">
-            <div class="cert-header-wrap reveal">
-                <span class="section-tag cert-section-tag">Our Accreditations</span>
-                <h2 class="cert-title">Certificates</h2>
-                <p class="cert-tagline">"Our certificates speak for our commitment to global marine standards."</p>
-                <p class="cert-desc">Every certificate we hold is a testament to our unwavering dedication to quality,
-                    safety, and compliance. Indo Hellas is proud to be recognised by leading international maritime
-                    bodies — ensuring every vessel we serve meets the highest global standards. Click any certificate to
-                    view the document.</p>
+        <!-- CERTIFICATE VIEW MODAL -->
+        <div class="modal-overlay" id="cert-modal">
+            <div class="modal-box cert-modal-box">
+                <button class="modal-close" onclick="closeModal('cert-modal')"><span class="material-symbols-outlined"
+                        style="font-size:17px">close</span></button>
+                <div class="modal-title" id="cert-modal-title">Certificate</div>
+                <div class="modal-subtitle" id="cert-modal-sub">Indo Hellas — Certification Document</div>
+                <div class="cert-frame" id="cert-frame">
+                    <img id="cert-frame-img" src="" alt="Certificate">
+                    <div class="cert-frame-placeholder" id="cert-frame-placeholder">
+                        <span class="material-symbols-outlined">workspace_premium</span>
+                        <p>Certificate image will be displayed here once uploaded.</p>
+                        <small>Add your certificate file as: <span id="cert-filename-hint">cert-name.png</span></small>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="marquee-border">
-            <div class="marquee-wrapper">
-                <div class="marquee-track" id="cert-track"></div>
-            </div>
-        </div>
-    </section>
 
-    <!-- CONTACT -->
-    <section id="contact" data-theme="light">
-        <div class="container">
-            <div class="contact-grid">
-                <div>
-                    <h2 class="contact-headline reveal">Let's Connect</h2>
-                    <p class="contact-subhead reveal">Our central operations desk is available 24/7. Reach out for a
-                        specialised quote or to enquire about our ship supply services.</p>
-                    <div class="contact-info-item reveal">
-                        <div class="contact-icon"><span class="material-symbols-outlined">location_on</span></div>
-                        <div>
-                            <div class="contact-info-label">Office Address</div>
-                            <div class="contact-info-value">No. 95, Linghi Chetty Street,<br>1st Floor, Suite No. 7,
-                                Mannady,<br>Chennai – 600 001, India</div>
-                        </div>
+        <!-- NAVBAR -->
+        <header id="navbar">
+            <div class="container nav-inner">
+                <a href="#" class="nav-logo-group">
+                    <div class="nav-logo-placeholder">
+                        <img src="./assets/logo.png" id="nav-logo-img" alt="Indo Hellas Logo"
+                            onerror="this.style.display='none'">
                     </div>
-                    <div class="contact-info-item reveal">
-                        <div class="contact-icon"><span class="material-symbols-outlined">call</span></div>
-                        <div>
-                            <div class="contact-info-label">Phone Lines</div>
-                            <div class="contact-info-value">
-                                <a class="contact-link" href="tel:+914442167484">+91 444 216 7484</a> &nbsp;|&nbsp; <a
-                                    class="contact-link" href="tel:+914442167485">+91 444 216 7485</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="contact-info-item reveal">
-                        <div class="contact-icon"><span class="material-symbols-outlined">alternate_email</span></div>
-                        <div>
-                            <div class="contact-info-label">Email Addresses</div>
-                            <div class="contact-emails contact-info-value">
-                                <a class="contact-link"
-                                    href="mailto:technical@indohellas.in">technical@indohellas.in</a>
-                                <a class="contact-link" href="mailto:supply@indohellas.in">supply@indohellas.in</a>
-                                <a class="contact-link"
-                                    href="mailto:indohellas@indohellas.in">indohellas@indohellas.in</a>
-                                <a class="contact-link" href="mailto:info@indohellas.in">info@indohellas.in</a>
-                                <a class="contact-link" href="mailto:indohellas@gmail.com">indohellas@gmail.com</a>
-                                <a class="contact-link"
-                                    href="mailto:supplyindohellas@gmail.com">supplyindohellas@gmail.com</a>
-                                <a class="contact-link" href="mailto:accounts@indohellas.in">accounts@indohellas.in</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="contact-info-item reveal">
-                        <div class="contact-icon"><span class="material-symbols-outlined">language</span></div>
-                        <div>
-                            <div class="contact-info-label">Websites</div>
-                            <div class="contact-info-value">
-                                <a class="contact-link" href="https://www.indohellasindia.com"
-                                    target="_blank">www.indohellasindia.com</a> &nbsp;|&nbsp; <a class="contact-link"
-                                    href="https://www.indohellas.in" target="_blank">www.indohellas.in</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="map-placeholder reveal">
-                        <img src="./assets/map.png" alt="Map">
-                        <a href="https://maps.google.com/?cid=12865298198414146297&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAMYASAF&hl=en-US&source=embed" target="_blank"
-                            class="map-btn">
-                            <span class="material-symbols-outlined" style="font-size:16px">open_in_new</span>
-                            View Indo Hellas on Map
-                        </a>
-                    </div>
-                </div>
-                <div class="contact-form-card reveal-right">
-                    <form id="contact-form">
-                        <div class="form-row">
-                            <div><label class="form-label">Full Name</label><input class="form-input" type="text"
-                                    placeholder="Captain John Smith"></div>
-                            <div><label class="form-label">Vessel Name</label><input class="form-input" type="text"
-                                    placeholder="MV Ocean Pioneer"></div>
-                        </div>
-                        <div class="form-group"><label class="form-label">Email Address</label><input class="form-input"
-                                type="email" placeholder="captain@fleet.com"></div>
-                        <div class="form-group"><label class="form-label">Service Required</label>
-                            <select class="form-select">
-                                <option>Fresh Provisions & Bonded Stores</option>
-                                <option>Deck Stores</option>
-                                <option>Engine Stores</option>
-                                <option>Electrical Stores</option>
-                                <option>Cabin Stores</option>
-                                <option>Medical Stores</option>
-                                <option>Technical & Welding Items</option>
-                                <option>Chemicals, Paints & Gases</option>
-                                <option>Ropes & Mooring</option>
-                                <option>Pyrotechnics</option>
-                                <option>General Enquiry</option>
-                            </select>
-                        </div>
-                        <div class="form-group"><label class="form-label">Message / RFQ Details</label><textarea
-                                class="form-textarea"
-                                placeholder="Describe your requirements, port of call, and estimated date of arrival..."></textarea>
-                        </div>
-                        <button type="submit" class="form-submit">Send Request</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer data-theme="dark">
-        <div class="container">
-            <div class="footer-grid">
-                <div>
-                    <div class="footer-logo-row">
-                        <span class="footer-logo">INDO HELLAS</span>
-                    </div>
-                    <p class="footer-tagline">General Marine Suppliers — World Wide. Serving global fleets with
-                        reliability and excellence since 1996.</p>
-                    <img class="footer-logo-img" src="./assets/logo.png" alt="Indo Hellas Logo" onerror="this.style.display='none'">
-                </div>
-                <div>
-                    <span class="footer-col-title">Contact Details</span>
-                    <ul class="footer-links">
-                        <li><a href="mailto:technical@indohellas.in">technical@indohellas.in</a></li>
-                        <li><a href="mailto:indohellas@indohellas.in">indohellas@indohellas.in</a></li>
-                        <li><a href="mailto:supply@indohellas.in">supply@indohellas.in</a></li>
-                        <li><a href="mailto:info@indohellas.in">info@indohellas.in</a></li>
-                        <li><a href="tel:+914442167484">+91 444 216 7484</a></li>
-                        <li><a href="tel:+914442167485">+91 444 216 7485</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <span class="footer-col-title">Quick Links</span>
-                    <ul class="footer-links">
-                        <li><a href="#about">Our Story</a></li>
+                    <span class="nav-logo-text">INDO HELLAS</span>
+                </a>
+                <nav>
+                    <ul class="nav-links">
+                        <li><a href="#about">About</a></li>
                         <li><a href="#services">Services</a></li>
                         <li><a href="#why-us">Why Us</a></li>
-                        <li><a href="#network">Global Network</a></li>
+                        <li><a href="#network">Network</a></li>
                         <li><a href="#certificates">Certificates</a></li>
-                        <li><a href="#contact">Request Quote</a></li>
+                        <li><a href="#contact">Contact</a></li>
                     </ul>
+                </nav>
+                <div style="display:flex;align-items:center;gap:14px">
+                    <button class="nav-cta" onclick="openModal('contact-modal')">Contact Us</button>
+                    <button class="hamburger" id="hamburger"
+                        aria-label="Menu"><span></span><span></span><span></span></button>
                 </div>
-                <div>
-                    <span class="footer-col-title">Global Ports</span>
-                    <div class="footer-ports">
-                        <span>Piraeus</span><span>Suez Canal</span>
-                        <span>Singapore</span><span>Istanbul</span>
-                        <span>Dubai</span><span>Chennai</span>
-                        <span>Colombo</span><span>Port Said</span>
-                        <span>Hamburg</span><span>Houston</span>
-                        <span>Shanghai</span><span>Busan</span>
-                        <span>Rotterdam</span><span>Cape Town</span>
-                        <span style="grid-column:span 2;opacity:.35;font-style:italic">& Many Other Ports</span>
+            </div>
+        </header>
+
+        <div id="mobile-menu">
+            <a href="#about">About</a><a href="#services">Services</a><a href="#why-us">Why Us</a>
+            <a href="#network">Network</a><a href="#certificates">Certificates</a><a href="#contact">Contact</a>
+        </div>
+
+        <!-- HERO -->
+        <section id="hero" data-theme="dark">
+            <video id="hero-video" autoplay muted loop playsinline>
+                <source src="./assets/hero.mp4" type="video/mp4">
+                <source src="hero.webm" type="video/webm">
+            </video>
+            <img id="hero-fallback"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrNO-0KyBH3fEk5mzTogoee0q0Xnhl-HcXmtCtKolqvOh1mLcz-qbtlM7MIOD6_wcW9YjJr3MlOYfFIKbzHs3Aj5yaLXwYgsg01RvEJDhkBukDUvnEbEnHTxcTHcpH06j7VYgO2nAP0UmKyqUQCj0jbLX9w0UEnTJYuibdpQ0IB_zZCNCrK0B5SeHvMLepYKRD4oWoVMKOZ1EOGuaX0wM-AwSok_kYEQO_Z-HUPNfg94EWoHc2r3HWD3Z3SFNlYZ95ZnJuMhD-d9I"
+                alt="Ship at sea">
+            <div class="hero-overlay"></div>
+            <div class="container hero-content">
+                <div class="hero-top-row">
+                    <h1 class="hero-headline">Welcome to<br><span class="accent">Indo Hellas</span><br>World Wide.</h1>
+                    <div class="hero-logo-wrap" id="hero-logo-wrap">
+                        <img src="./assets/logo.png" alt="Indo Hellas Logo" id="hero-logo-img"
+                            onerror="this.style.display='none';document.getElementById('hero-logo-fallback').style.display='flex'">
+                        <div class="hero-logo-placeholder" id="hero-logo-fallback" style="display:none">
+                            <span class="material-symbols-outlined">sailing</span>
+                            <p>Indo Hellas</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-sub-row">
+                    <div class="hero-sub-box outline">One Stop Shop</div>
+                    <div class="hero-sub-box filled">General Marine Suppliers</div>
+                </div>
+                <div class="hero-bottom">
+                    <div class="hero-stat">
+                        <h3>Marine Services</h3>
+                        <p>We provide high quality marine services to clients around the world ensuring excellence and
+                            reliability across every region we serve.</p>
+                    </div>
+                    <div class="hero-stat">
+                        <h3>360° Support</h3>
+                        <p>We are committed to being at your service whenever you need us, ready to offer assistance and
+                            support at any time.</p>
                     </div>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <p class="footer-quote">"A Legacy of Trust. A Commitment to Excellence. A Global Marine Partner You Can
-                    Rely On."</p>
-                <p class="footer-copy">Indo Hellas General Marine Suppliers. Chennai, India.</p>
+            <div class="scroll-indicator" id="scroll-indicator"><span>Scroll</span>
+                <div class="scroll-line"></div>
+            </div>
+        </section>
+
+        <!-- FAB -->
+        <div class="fab-container">
+            <button class="fab" onclick="openModal('flyer-modal')">
+                <span class="fab-label">View Flyer</span>
+                <div class="fab-icon"><span class="material-symbols-outlined">description</span></div>
+            </button>
+        </div>
+
+        <!-- ABOUT -->
+        <section id="about" data-theme="light">
+            <div class="container">
+                <div class="about-section-header reveal">
+                    <span class="section-tag about-section-tag">Who We Are</span>
+                    <h2 class="about-section-title">About Us</h2>
+                    <p class="about-section-lead">A Legacy of Trust. A Commitment to Excellence. A Global Marine Partner
+                        You Can Rely On. For more than four decades, INDO HELLAS has stood at the forefront of the
+                        maritime industry — trusted by some of the most reputable shipowners and operators across the
+                        world.</p>
+                </div>
+                <div class="about-tabs reveal">
+                    <button class="about-tab active" onclick="switchAboutTab(0)">Our Legacy</button>
+                    <button class="about-tab" onclick="switchAboutTab(1)">Our Journey</button>
+                    <button class="about-tab" onclick="switchAboutTab(2)">Our Commitment</button>
+                </div>
+                <div class="about-panel active" id="about-panel-0">
+                    <div class="about-grid">
+                        <div>
+                            <span class="section-tag about-sub-tag reveal">Our Legacy</span>
+                            <h3 class="about-sub-headline reveal">A Legacy of Reliability in the Global Marine Industry
+                            </h3>
+                            <p class="about-body reveal">For more than four decades, INDO HELLAS has been a name
+                                synonymous with trust, efficiency, and excellence in ship supply services. Founded in
+                                1996 in Chennai (Madras), we began with a mission to provide world-class ship chandling
+                                solutions to vessels operating across India.</p>
+                            <p class="about-body reveal">What started as a local operation has grown into a globally
+                                connected marine service provider, supporting ships across major and minor Indian ports
+                                — and expanding internationally since 2018. Today, INDO HELLAS stands as one of the
+                                oldest and most reputed marine suppliers, trusted by shipowners, fleet managers, and
+                                maritime professionals worldwide.</p>
+                            <div class="about-feature reveal">
+                                <div class="feature-icon"><span class="material-symbols-outlined">warehouse</span></div>
+                                <div>
+                                    <div class="feature-title">Our Facilities</div>
+                                    <p class="feature-desc">Our own 600 sq mtr warehouse, 2000 sq mtr workspace, located
+                                        just 1 km from the port — backed by 16 dedicated employees who go the extra mile
+                                        every day.</p>
+                                </div>
+                            </div>
+                            <div class="about-feature reveal">
+                                <div class="feature-icon"><span class="material-symbols-outlined">handshake</span></div>
+                                <div>
+                                    <div class="feature-title">More Than Just Suppliers</div>
+                                    <p class="feature-desc">We are partners in your vessel's journey, ensuring smooth
+                                        operations from port to port, ocean to ocean — with precision, care, and
+                                        dedication at every step.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="about-images reveal-right">
+                            <img class="about-img" src="./assets/about1.png" alt="Marine supply">
+                            <img class="about-img" style="margin-top:0" src="./assets/about2.jpg" alt="Port">
+                        </div>
+                    </div>
+                </div>
+                <div class="about-panel" id="about-panel-1">
+                    <div class="journey-layout">
+                        <div class="journey-image-wrap reveal-left">
+                            <img class="journey-img" src="./assets/about3.png" alt="Our journey">
+                            <div class="journey-badge">
+                                <div class="journey-badge-num">30+</div>
+                                <div class="journey-badge-label">Years of Excellence</div>
+                            </div>
+                        </div>
+                        <div class="reveal">
+                            <span class="section-tag about-sub-tag">Our Journey & Experience</span>
+                            <h3 class="about-sub-headline">Continuous Growth, Consistent Excellence</h3>
+                            <p class="about-body">With over 30 years of industry experience, INDO HELLAS has built a
+                                strong reputation for quality, ethics, and consistency. Our journey reflects continuous
+                                growth — driven by an unwavering commitment to our clients and the maritime community.
+                            </p>
+                            <div class="journey-milestones">
+                                <div class="milestone"><span class="milestone-year">1996</span>
+                                    <div class="milestone-dot"></div>
+                                    <div class="milestone-text"><strong>Founded in Chennai</strong>Started with a
+                                        mission to provide world-class ship chandling solutions across India.</div>
+                                </div>
+                                <div class="milestone"><span class="milestone-year">2000</span>
+                                    <div class="milestone-dot"></div>
+                                    <div class="milestone-text"><strong>Pan-India Expansion</strong>Extended operations
+                                        to cover all major and minor Indian ports.</div>
+                                </div>
+                                <div class="milestone"><span class="milestone-year">2010s</span>
+                                    <div class="milestone-dot"></div>
+                                    <div class="milestone-text"><strong>International Relationships</strong>Built
+                                        long-term partnerships with global shipping companies spanning 1 to 4 decades.
+                                    </div>
+                                </div>
+                                <div class="milestone"><span class="milestone-year">2018</span>
+                                    <div class="milestone-dot"></div>
+                                    <div class="milestone-text"><strong>Global Operations Launched</strong>Established
+                                        international presence, supported by a powerful global supply chain network.
+                                    </div>
+                                </div>
+                                <div class="milestone"><span class="milestone-year">Today</span>
+                                    <div class="milestone-dot"></div>
+                                    <div class="milestone-text"><strong>World-Class Marine Partner</strong>Recognised as
+                                        one of the oldest and most reputed marine suppliers trusted worldwide.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-panel" id="about-panel-2">
+                    <div class="commitment-layout">
+                        <div class="reveal">
+                            <span class="section-tag about-sub-tag">Our Commitment & Values</span>
+                            <h3 class="about-sub-headline">Delivering Global Quality with Local Care</h3>
+                            <p class="commitment-intro">INDO HELLAS is committed to delivering world-class ship supply
+                                services with integrity, precision, and care. We cooperate with reputable shipping
+                                companies across the world, coordinating through regional hubs to deliver supplies
+                                wherever and whenever required.</p>
+                            <div class="commitment-list">
+                                <div class="commitment-item">
+                                    <div class="commitment-check"><span class="material-symbols-outlined">check</span>
+                                    </div>
+                                    <div class="commitment-item-text"><strong>Quality products at competitive
+                                            prices</strong> — sourced from trusted, certified suppliers worldwide.</div>
+                                </div>
+                                <div class="commitment-item">
+                                    <div class="commitment-check"><span class="material-symbols-outlined">check</span>
+                                    </div>
+                                    <div class="commitment-item-text"><strong>Fast and dependable deliveries</strong> —
+                                        engineered logistics to meet any port schedule.</div>
+                                </div>
+                                <div class="commitment-item">
+                                    <div class="commitment-check"><span class="material-symbols-outlined">check</span>
+                                    </div>
+                                    <div class="commitment-item-text"><strong>24/7/365 operational support</strong> —
+                                        our team is always on standby, in every time zone.</div>
+                                </div>
+                                <div class="commitment-item">
+                                    <div class="commitment-check"><span class="material-symbols-outlined">check</span>
+                                    </div>
+                                    <div class="commitment-item-text"><strong>ISO-certified service</strong> — ISO 9001,
+                                        22000, 14001, 45001, and HACCP certified operations.</div>
+                                </div>
+                                <div class="commitment-item">
+                                    <div class="commitment-check"><span class="material-symbols-outlined">check</span>
+                                    </div>
+                                    <div class="commitment-item-text"><strong>Ethical business practices</strong> —
+                                        transparency and integrity form the backbone of every transaction.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="commitment-cards reveal-right">
+                            <div class="commitment-card">
+                                <div class="commitment-card-icon"><span
+                                        class="material-symbols-outlined">verified</span></div>
+                                <div class="commitment-card-title">Certified Excellence</div>
+                                <div class="commitment-card-text">Every service we deliver is backed by international
+                                    certifications — ensuring your vessel meets all compliance standards at every port
+                                    of call.</div>
+                            </div>
+                            <div class="commitment-card">
+                                <div class="commitment-card-icon"><span
+                                        class="material-symbols-outlined">local_shipping</span></div>
+                                <div class="commitment-card-title">Supply Chain Strength</div>
+                                <div class="commitment-card-text">A robust global supply chain allows us to deliver
+                                    provisions, technical stores, medical supplies, and more — from any major port, on
+                                    time, every time.</div>
+                            </div>
+                            <div class="commitment-card">
+                                <div class="commitment-card-icon"><span
+                                        class="material-symbols-outlined">support_agent</span></div>
+                                <div class="commitment-card-title">Always Available</div>
+                                <div class="commitment-card-text">Our dedicated team works tirelessly to ensure timely,
+                                    flawless service — responding instantly to your vessel's needs, regardless of the
+                                    hour or location.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="about-counter-strip">
+                <div class="container">
+                    <div class="counter-grid">
+                        <div class="counter-item">
+                            <div class="counter-num" data-target="7000" data-suffix="+">0</div>
+                            <div class="counter-label">Ships Supplied</div>
+                        </div>
+                        <div class="counter-item">
+                            <div class="counter-num" data-target="100" data-suffix="+">0</div>
+                            <div class="counter-label">Ports Served</div>
+                        </div>
+                        <div class="counter-item">
+                            <div class="counter-num" data-target="15" data-suffix="+">0</div>
+                            <div class="counter-label">Countries Covered</div>
+                        </div>
+                        <div class="counter-item">
+                            <div class="counter-num" data-target="150" data-suffix="+">0</div>
+                            <div class="counter-label">Clients</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SERVICES -->
+        <section id="services" data-theme="dark">
+            <div class="container">
+                <div class="services-layout">
+                    <div class="services-visual reveal-left">
+                        <div class="carousel-slide active"><img src="./assets/Provision-Stores.png" alt="Provisions">
+                        </div>
+                        <div class="carousel-slide"><img src="./assets/Deck-Stores.png" alt="Deck"></div>
+                        <div class="carousel-slide"><img src="./assets/Engine-Stores.png" alt="Engine"></div>
+                        <div class="carousel-slide"><img src="./assets/Electrical-Stores.png" alt="Electrical"></div>
+                        <div class="carousel-slide"><img src="./assets/Cabin-Stores.png" alt="Cabin"></div>
+                        <div class="carousel-slide"><img src="./assets/Medical-Stores.png" alt="Medical"></div>
+                        <div class="carousel-slide"><img src="./assets/Technical-Stores.png" alt="Technical"></div>
+                        <div class="carousel-slide"><img src="./assets/Ropes.png" alt="Ropes"></div>
+                        <div class="carousel-slide"><img src="./assets/Chemicals.png" alt="Chemicals"></div>
+                        <div class="carousel-slide"><img src="./assets/Bonded-Stores.png" alt="Bonded"></div>
+                        <div class="services-visual-overlay"></div>
+                        <div class="services-visual-label">
+                            <h3 id="carousel-label-title">Fresh Provisions & Bonded</h3>
+                            <p id="carousel-label-sub">High-quality food & bonded goods</p>
+                        </div>
+                        <div class="carousel-dots" id="carousel-dots"></div>
+                    </div>
+                    <div class="services-content">
+                        <div class="services-header">
+                            <span class="section-tag services-tag reveal">Our Expertise</span>
+                            <h2 class="services-headline reveal">Comprehensive Marine Supply</h2>
+                            <p class="services-intro reveal">As a full-service marine supplier, INDO HELLAS provides a
+                                complete range of provisions, stores, and operational solutions to keep your vessels
+                                running smoothly — anytime, anywhere.</p>
+                        </div>
+                        <div class="service-tabs reveal" id="service-tabs"></div>
+                        <div id="service-panels"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- WHY US -->
+        <section id="why-us" data-theme="light">
+            <div class="container">
+                <div class="why-header">
+                    <h2 class="why-headline reveal">Why Global Fleets Trust Us</h2>
+                    <p class="why-subhead reveal">Three decades of maritime heritage, ethical business practices, and a
+                        team that goes the extra mile — every single day.</p>
+                </div>
+                <div class="bento-row1">
+                    <div class="bento-card bento-large reveal">
+                        <div>
+                            <div class="bento-icon-wrap"><span class="material-symbols-outlined">history</span></div>
+                            <div class="bento-title">30+ Years of Maritime Legacy</div>
+                            <p class="bento-body">A relationship based on honesty for over 30 years. Since 1996, INDO
+                                HELLAS has navigated the complexities of international maritime trade, building a
+                                reputation for reliability that spans generations of seafarers worldwide.</p>
+                        </div>
+                        <div class="bento-tags"><span class="bento-tag">Reliable</span><span class="bento-tag">Since
+                                1996</span><span class="bento-tag">Experienced</span><span
+                                class="bento-tag">Trusted</span></div>
+                    </div>
+                    <div class="bento-card bento-dark reveal">
+                        <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">public</span>
+                        <div class="bento-title">Global Reach, Local Expertise</div>
+                        <p class="bento-body">From India to international ports — a one-stop solution for all ship needs
+                            across major maritime locations worldwide.</p>
+                    </div>
+                </div>
+                <div class="bento-row2">
+                    <div class="bento-card bento-muted reveal">
+                        <div class="bento-icon-wrap"><span class="material-symbols-outlined">support_agent</span></div>
+                        <div class="bento-title">360° Support</div>
+                        <p class="bento-body">We work 24×7×365 to fulfil your vessel's needs at competitive prices.
+                            Always on call, always ready, in every time zone.</p>
+                    </div>
+                    <div class="bento-card bento-quality reveal">
+                        <div style="flex:1">
+                            <div class="bento-title">Quality Without Compromise</div>
+                            <p class="bento-body">Strict quality standards backed by ISO 9001, 22000, 14001, 45001, and
+                                HACCP certifications. Our long-standing reputation is built on trust, consistency, and
+                                reliability across every port we serve.</p>
+                        </div>
+                        <div class="bento-quality-icon"><span class="material-symbols-outlined">verified_user</span>
+                        </div>
+                    </div>
+                    <div class="bento-card reveal">
+                        <div class="bento-icon-wrap"><span class="material-symbols-outlined">groups</span></div>
+                        <div class="bento-title">Dedicated Team</div>
+                        <p class="bento-body">Our 16 team members work hard every day and go the extra mile to fulfil
+                            your ship's needs with precision and care.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NETWORK -->
+        <section id="network" data-theme="dark">
+            <div class="container">
+                <div class="network-grid">
+                    <div>
+                        <span class="section-tag network-tag reveal">Our Reach</span>
+                        <h2 class="network-headline reveal">A Truly Global Network</h2>
+                        <p class="network-body reveal">We operate across seven continents, providing a unified supply
+                            chain solution that follows your fleet wherever it sails.</p>
+                        <div class="accordion-item reveal" data-accordion>
+                            <div class="accordion-header"><span class="accordion-title">Africa</span><span
+                                    class="material-symbols-outlined accordion-icon">add</span></div>
+                            <div class="accordion-body">
+                                <div class="accordion-country-list"><span>Benin</span><span>Cameroon</span><span>Cape
+                                        Verde</span><span>Congo</span><span>Cote
+                                        d'Ivoire</span><span>Djibouti</span><span>Egypt</span><span>Gabon</span><span>Ghana</span><span>Guinea</span><span>Mauritius</span><span>Morocco</span><span>Mozambique</span><span>Namibia</span><span>Nigeria</span><span>Senegal</span><span>South
+                                        Africa</span><span>Tanzania</span><span>Togo</span><span>Tunisia</span></div>
+                            </div>
+                        </div>
+                        <div class="accordion-item reveal" data-accordion>
+                            <div class="accordion-header"><span class="accordion-title">Asia</span><span
+                                    class="material-symbols-outlined accordion-icon">add</span></div>
+                            <div class="accordion-body">
+                                <div class="accordion-country-list"><span>Bangladesh</span><span>China</span><span>Hong
+                                        Kong</span><span>India</span><span>Indonesia</span><span>Iran</span><span>Iraq</span><span>Israel</span><span>Japan</span><span>Jordan</span><span>Korea</span><span>Myanmar</span><span>Philippines</span><span>Singapore</span><span>Taiwan</span><span>Thailand</span><span>Turkey</span><span>Vietnam</span><span>Yemen</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item reveal" data-accordion>
+                            <div class="accordion-header"><span class="accordion-title">Europe</span><span
+                                    class="material-symbols-outlined accordion-icon">add</span></div>
+                            <div class="accordion-body">
+                                <div class="accordion-country-list">
+                                    <span>Bulgaria</span><span>Denmark</span><span>Estonia</span><span>Finland</span><span>France</span><span>Georgia</span><span>Ireland</span><span>Italy</span><span>Latvia</span><span>Lithuania</span><span>Netherlands</span><span>Norway</span><span>Poland</span><span>Portugal</span><span>Romania</span><span>Russia</span><span>Spain</span><span>Ukraine</span><span>United
+                                        Kingdom</span></div>
+                            </div>
+                        </div>
+                        <div class="accordion-item reveal" data-accordion>
+                            <div class="accordion-header"><span class="accordion-title">North America</span><span
+                                    class="material-symbols-outlined accordion-icon">add</span></div>
+                            <div class="accordion-body">
+                                <div class="accordion-country-list"><span>USA</span><span>Canada</span></div>
+                            </div>
+                        </div>
+                        <div class="accordion-item reveal" data-accordion>
+                            <div class="accordion-header"><span class="accordion-title">South America</span><span
+                                    class="material-symbols-outlined accordion-icon">add</span></div>
+                            <div class="accordion-body">
+                                <div class="accordion-country-list">
+                                    <span>Argentina</span><span>Brazil</span><span>Chile</span><span>Colombia</span><span>Ecuador</span><span>Peru</span><span>Venezuela</span><span>Uruguay</span><span>Suriname</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item reveal" data-accordion>
+                            <div class="accordion-header"><span class="accordion-title">Central America</span><span
+                                    class="material-symbols-outlined accordion-icon">add</span></div>
+                            <div class="accordion-body">
+                                <div class="accordion-country-list"><span>Costa
+                                        Rica</span><span>Guatemala</span><span>Mexico</span><span>Panama</span></div>
+                            </div>
+                        </div>
+                        <div class="accordion-item reveal" data-accordion>
+                            <div class="accordion-header"><span class="accordion-title">Caribbean Islands</span><span
+                                    class="material-symbols-outlined accordion-icon">add</span></div>
+                            <div class="accordion-body">
+                                <div class="accordion-country-list">
+                                    <span>Aruba</span><span>Curaçao</span><span>Dominican
+                                        Republic</span><span>Jamaica</span><span>Trinidad & Tobago</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="map-card reveal-right">
+                        <div class="map-visual">
+                            <img class="map-bg" src="./assets/network.png" alt="World map">
+                            <div class="map-dots">
+                                <div class="map-dot" style="top:55%;left:85%">
+                                    <div class="map-dot-tooltip">Australia</div>
+                                </div>
+                                <div class="map-dot" style="top:38%;left:48%">
+                                    <div class="map-dot-tooltip">Europe</div>
+                                </div>
+                                <div class="map-dot" style="top:45%;left:20%">
+                                    <div class="map-dot-tooltip">North America</div>
+                                </div>
+                                <div class="map-dot" style="top:65%;left:55%">
+                                    <div class="map-dot-tooltip">South Africa</div>
+                                </div>
+                                <div class="map-dot" style="top:44%;left:57%">
+                                    <div class="map-dot-tooltip">Egypt · Suez Canal</div>
+                                </div>
+                                <div class="map-dot" style="top:50%;left:70%">
+                                    <div class="map-dot-tooltip">South India · Chennai</div>
+                                </div>
+                                <div class="map-dot" style="top:58%;left:38%">
+                                    <div class="map-dot-tooltip">South America</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CERTIFICATES -->
+        <section id="certificates" data-theme="light">
+            <div class="container">
+                <div class="cert-header-wrap reveal">
+                    <span class="section-tag cert-section-tag">Our Accreditations</span>
+                    <h2 class="cert-title">Certificates</h2>
+                    <p class="cert-tagline">"Our certificates speak for our commitment to global marine standards."</p>
+                    <p class="cert-desc">Every certificate we hold is a testament to our unwavering dedication to
+                        quality, safety, and compliance. Indo Hellas is proud to be recognised by leading international
+                        maritime bodies — ensuring every vessel we serve meets the highest global standards. Click any
+                        certificate to view the document.</p>
+                </div>
+            </div>
+            <div class="marquee-border">
+                <div class="marquee-wrapper">
+                    <div class="marquee-track" id="cert-track"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section id="contact" data-theme="light">
+            <div class="container">
+                <div class="contact-grid">
+                    <div>
+                        <h2 class="contact-headline reveal">Let's Connect</h2>
+                        <p class="contact-subhead reveal">Our central operations desk is available 24/7. Reach out for a
+                            specialised quote or to enquire about our ship supply services.</p>
+                        <div class="contact-info-item reveal">
+                            <div class="contact-icon"><span class="material-symbols-outlined">location_on</span></div>
+                            <div>
+                                <div class="contact-info-label">Office Address</div>
+                                <div class="contact-info-value">No. 95, Linghi Chetty Street,<br>1st Floor, Suite No. 7,
+                                    Mannady,<br>Chennai – 600 001, India</div>
+                            </div>
+                        </div>
+                        <div class="contact-info-item reveal">
+                            <div class="contact-icon"><span class="material-symbols-outlined">call</span></div>
+                            <div>
+                                <div class="contact-info-label">Phone Lines</div>
+                                <div class="contact-info-value">
+                                    <a class="contact-link" href="tel:+914442167484">+91 444 216 7484</a> &nbsp;|&nbsp;
+                                    <a class="contact-link" href="tel:+914442167485">+91 444 216 7485</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="contact-info-item reveal">
+                            <div class="contact-icon"><span class="material-symbols-outlined">alternate_email</span>
+                            </div>
+                            <div>
+                                <div class="contact-info-label">Email Addresses</div>
+                                <div class="contact-emails contact-info-value">
+                                    <a class="contact-link"
+                                        href="mailto:technical@indohellas.in">technical@indohellas.in</a>
+                                    <a class="contact-link" href="mailto:supply@indohellas.in">supply@indohellas.in</a>
+                                    <a class="contact-link"
+                                        href="mailto:indohellas@indohellas.in">indohellas@indohellas.in</a>
+                                    <a class="contact-link" href="mailto:info@indohellas.in">info@indohellas.in</a>
+                                    <a class="contact-link" href="mailto:indohellas@gmail.com">indohellas@gmail.com</a>
+                                    <a class="contact-link"
+                                        href="mailto:supplyindohellas@gmail.com">supplyindohellas@gmail.com</a>
+                                    <a class="contact-link"
+                                        href="mailto:accounts@indohellas.in">accounts@indohellas.in</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="contact-info-item reveal">
+                            <div class="contact-icon"><span class="material-symbols-outlined">language</span></div>
+                            <div>
+                                <div class="contact-info-label">Websites</div>
+                                <div class="contact-info-value">
+                                    <a class="contact-link" href="https://www.indohellasindia.com"
+                                        target="_blank">www.indohellasindia.com</a> &nbsp;|&nbsp; <a
+                                        class="contact-link" href="https://www.indohellas.in"
+                                        target="_blank">www.indohellas.in</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="map-placeholder reveal">
+                            <img src="./assets/map.png" alt="Map">
+                            <a href="https://maps.google.com/?cid=12865298198414146297&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAMYASAF&hl=en-US&source=embed"
+                                target="_blank" class="map-btn">
+                                <span class="material-symbols-outlined" style="font-size:16px">open_in_new</span>
+                                View Indo Hellas on Map
+                            </a>
+                        </div>
+                    </div>
+                    <div class="contact-form-card reveal-right">
+                        <form id="contact-form">
+                            <div class="form-row">
+                                <div><label class="form-label">Full Name</label><input class="form-input" type="text"
+                                        placeholder="Captain John Smith"></div>
+                                <div><label class="form-label">Vessel Name</label><input class="form-input" type="text"
+                                        placeholder="MV Ocean Pioneer"></div>
+                            </div>
+                            <div class="form-group"><label class="form-label">Email Address</label><input
+                                    class="form-input" type="email" placeholder="captain@fleet.com"></div>
+                            <div class="form-group"><label class="form-label">Service Required</label>
+                                <select class="form-select">
+                                    <option>Fresh Provisions & Bonded Stores</option>
+                                    <option>Deck Stores</option>
+                                    <option>Engine Stores</option>
+                                    <option>Electrical Stores</option>
+                                    <option>Cabin Stores</option>
+                                    <option>Medical Stores</option>
+                                    <option>Technical & Welding Items</option>
+                                    <option>Chemicals, Paints & Gases</option>
+                                    <option>Ropes & Mooring</option>
+                                    <option>Pyrotechnics</option>
+                                    <option>General Enquiry</option>
+                                </select>
+                            </div>
+                            <div class="form-group"><label class="form-label">Message / RFQ Details</label><textarea
+                                    class="form-textarea"
+                                    placeholder="Describe your requirements, port of call, and estimated date of arrival..."></textarea>
+                            </div>
+                            <button type="submit" class="form-submit">Send Request</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer data-theme="dark">
+            <div class="container">
+                <div class="footer-grid">
+                    <div>
+                        <div class="footer-logo-row">
+                            <span class="footer-logo">INDO HELLAS</span>
+                        </div>
+                        <p class="footer-tagline">General Marine Suppliers — World Wide. Serving global fleets with
+                            reliability and excellence since 1996.</p>
+                        <img class="footer-logo-img" src="./assets/logo.png" alt="Indo Hellas Logo"
+                            onerror="this.style.display='none'">
+                    </div>
+                    <div>
+                        <span class="footer-col-title">Contact Details</span>
+                        <ul class="footer-links">
+                            <li><a href="mailto:technical@indohellas.in">technical@indohellas.in</a></li>
+                            <li><a href="mailto:indohellas@indohellas.in">indohellas@indohellas.in</a></li>
+                            <li><a href="mailto:supply@indohellas.in">supply@indohellas.in</a></li>
+                            <li><a href="mailto:info@indohellas.in">info@indohellas.in</a></li>
+                            <li><a href="tel:+914442167484">+91 444 216 7484</a></li>
+                            <li><a href="tel:+914442167485">+91 444 216 7485</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <span class="footer-col-title">Quick Links</span>
+                        <ul class="footer-links">
+                            <li><a href="#about">Our Story</a></li>
+                            <li><a href="#services">Services</a></li>
+                            <li><a href="#why-us">Why Us</a></li>
+                            <li><a href="#network">Global Network</a></li>
+                            <li><a href="#certificates">Certificates</a></li>
+                            <li><a href="#contact">Request Quote</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <span class="footer-col-title">Global Ports</span>
+                        <div class="footer-ports">
+                            <span>Piraeus</span><span>Suez Canal</span>
+                            <span>Singapore</span><span>Istanbul</span>
+                            <span>Dubai</span><span>Chennai</span>
+                            <span>Colombo</span><span>Port Said</span>
+                            <span>Hamburg</span><span>Houston</span>
+                            <span>Shanghai</span><span>Busan</span>
+                            <span>Rotterdam</span><span>Cape Town</span>
+                            <span style="grid-column:span 2;opacity:.35;font-style:italic">& Many Other Ports</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p class="footer-quote">"A Legacy of Trust. A Commitment to Excellence. A Global Marine Partner You
+                        Can Rely On."</p>
+                    <p class="footer-copy">Indo Hellas General Marine Suppliers. Chennai, India.</p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- THE PRESENCE — Designer Credit Footer -->
+        <div id="presence-credit">
+            <div class="presence-inner">
+                <span class="presence-text">© 2026 All rights reserved. Designed &amp; Developed by</span>
+                <a href="https://www.linkedin.com/in/ryantusi/" target="_blank" class="presence-link"
+                    title="Designed & Developed by THE PRESENCE">
+                    <img src="./assets/ThePresence.png" alt="The Presence" class="presence-logo">
+                    <span class="presence-brand">The Presence</span>
+                </a>
             </div>
         </div>
-    </footer>
+
+    </div><!-- end #main-site -->
 
     <script>
-        // ─── FLYER DOWNLOAD ───────────────────────────────────
+        // ─── PRELOADER ────────────────────────────────────────────────────
+        (function () {
+            const bar = document.getElementById('preloader-bar');
+            const counter = document.getElementById('preloader-counter');
+            const loader = document.getElementById('preloader');
+            const site = document.getElementById('main-site');
+            const anchor = document.getElementById('preloader-anchor');
+            let progress = 0;
+
+            // Prevent scroll while loading
+            document.body.style.overflow = 'hidden';
+
+            function tick() {
+                if (progress < 100) {
+                    let inc = progress > 80
+                        ? Math.random() * 0.4
+                        : Math.random() * 2 + 0.8;
+                    progress = Math.min(progress + inc, 100);
+                    bar.style.width = progress + '%';
+                    counter.textContent = Math.floor(progress) + '%';
+                    let delay = progress > 80 ? 120 + Math.random() * 150 : 25 + Math.random() * 40;
+                    setTimeout(tick, delay);
+                } else {
+                    counter.textContent = 'SITE READY';
+                    setTimeout(dismiss, 600);
+                }
+            }
+
+            function dismiss() {
+                loader.classList.add('hidden');
+                site.classList.add('visible');
+                document.body.style.overflow = '';
+                // Kick off GSAP after site is visible
+                setTimeout(initGSAP, 100);
+            }
+
+            // Anchor hover micro-interaction
+            anchor.addEventListener('mouseenter', () => {
+                anchor.style.fontVariationSettings = "'FILL' 1, 'wght' 300";
+                anchor.classList.add('text-blue');
+            });
+            anchor.addEventListener('mouseleave', () => {
+                anchor.style.fontVariationSettings = "'FILL' 0, 'wght' 200";
+                anchor.classList.remove('text-blue');
+            });
+
+            setTimeout(tick, 800);
+        })();
+
+        // ─── FLYER DOWNLOAD ───────────────────────────────────────────────
         document.getElementById('downloadFlyerBtn').addEventListener('click', () => {
             const link = document.createElement('a');
-
-            link.href = './assets/Flyer.jpeg'; // your PDF path
+            link.href = './assets/Flyer.jpeg';
             link.download = 'IndoHellas-Flyer.jpeg';
-
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
         });
-    
+
         // ─── CERTIFICATES ─────────────────────────────────────────────────
-        // Map cert name → filename (add your actual filenames here)
         const certFiles = {
             'IMPA': './assets/IMPA.jpg',
             'ShipServe ID: 204899': './assets/ShipServe.png',
@@ -3425,20 +3725,14 @@
         };
         const certNames = Object.keys(certFiles);
         const track = document.getElementById('cert-track');
-        // Duplicate for seamless loop
         [...certNames, ...certNames].forEach((name, i) => {
-            if (i > 0 && i % 1 === 0) {
-                const div = document.createElement('div');
-                div.className = 'marquee-item-divider';
-                track.appendChild(div);
-            }
+            if (i > 0) { const d = document.createElement('div'); d.className = 'marquee-item-divider'; track.appendChild(d); }
             const item = document.createElement('div');
             item.className = 'marquee-item';
             item.innerHTML = `<span>${name}</span>`;
             item.addEventListener('click', () => openCertModal(name));
             track.appendChild(item);
         });
-
         function openCertModal(name) {
             document.getElementById('cert-modal-title').textContent = name;
             document.getElementById('cert-modal-sub').textContent = `Indo Hellas — ${name} Certification`;
@@ -3446,9 +3740,7 @@
             document.getElementById('cert-filename-hint').textContent = fname;
             const img = document.getElementById('cert-frame-img');
             const ph = document.getElementById('cert-frame-placeholder');
-            img.src = fname;
-            img.style.display = 'none';
-            ph.style.display = 'flex';
+            img.src = fname; img.style.display = 'none'; ph.style.display = 'flex';
             img.onload = () => { img.style.display = 'block'; ph.style.display = 'none'; };
             img.onerror = () => { img.style.display = 'none'; ph.style.display = 'flex'; };
             openModal('cert-modal');
@@ -3492,29 +3784,27 @@
         }
         setInterval(() => switchService((activeService + 1) % services.length), 4500);
 
-        // ─── ABOUT TABS ────────────────────────────────────────────────────
+        // ─── ABOUT TABS ───────────────────────────────────────────────────
         function switchAboutTab(idx) {
             document.querySelectorAll('.about-tab').forEach((t, i) => t.classList.toggle('active', i === idx));
             document.querySelectorAll('.about-panel').forEach((p, i) => p.classList.toggle('active', i === idx));
         }
 
-        // ─── COUNTER ───────────────────────────────────────────────────────
+        // ─── COUNTER ──────────────────────────────────────────────────────
         function animateCounter(el) {
             const target = parseInt(el.dataset.target), suffix = el.dataset.suffix || '';
             const inc = target / (2000 / 16); let cur = 0;
             const t = setInterval(() => { cur += inc; if (cur >= target) { cur = target; clearInterval(t); } el.textContent = Math.floor(cur).toLocaleString() + suffix; }, 16);
         }
-        new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.querySelectorAll('.counter-num').forEach(animateCounter); counterObs.unobserve(e.target); } }); }, { threshold: .5 }).observe(document.querySelector('.about-counter-strip'));
-        // fix: use named observer
         const counterObs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.querySelectorAll('.counter-num').forEach(animateCounter); counterObs.unobserve(e.target); } }); }, { threshold: .5 });
         counterObs.observe(document.querySelector('.about-counter-strip'));
 
-        // ─── MODAL ─────────────────────────────────────────────────────────
+        // ─── MODAL ────────────────────────────────────────────────────────
         function openModal(id) { document.getElementById(id).classList.add('open'); document.body.style.overflow = 'hidden'; }
         function closeModal(id) { document.getElementById(id).classList.remove('open'); document.body.style.overflow = ''; }
         document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o) closeModal(o.id); }));
 
-        // ─── CURSOR ────────────────────────────────────────────────────────
+        // ─── CURSOR ───────────────────────────────────────────────────────
         const cursorEl = document.getElementById('cursor'), cursorRing = document.getElementById('cursor-ring');
         let mx = 0, my = 0, rx = 0, ry = 0;
         document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursorEl.style.left = mx + 'px'; cursorEl.style.top = my + 'px'; });
@@ -3523,26 +3813,26 @@
         const dkObs = new IntersectionObserver(entries => { entries.forEach(e => { e.isIntersecting ? dc++ : (dc = Math.max(0, dc - 1)); }); document.body.classList.toggle('on-dark', dc > 0); }, { threshold: .3 });
         darkSecs.forEach(s => dkObs.observe(s));
 
-        // ─── PROGRESS ──────────────────────────────────────────────────────
+        // ─── PROGRESS BAR ─────────────────────────────────────────────────
         const pb = document.getElementById('progress');
         window.addEventListener('scroll', () => { pb.style.width = (window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100) + '%'; });
 
-        // ─── NAVBAR ────────────────────────────────────────────────────────
+        // ─── NAVBAR ───────────────────────────────────────────────────────
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 60));
 
-        // ─── HAMBURGER ─────────────────────────────────────────────────────
+        // ─── HAMBURGER ────────────────────────────────────────────────────
         const hamburger = document.getElementById('hamburger'), mobileMenu = document.getElementById('mobile-menu');
         hamburger.addEventListener('click', () => { hamburger.classList.toggle('open'); mobileMenu.classList.toggle('open'); document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : ''; });
         mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { hamburger.classList.remove('open'); mobileMenu.classList.remove('open'); document.body.style.overflow = ''; }));
 
-        // ─── VIDEO FALLBACK ────────────────────────────────────────────────
+        // ─── VIDEO FALLBACK ───────────────────────────────────────────────
         const video = document.getElementById('hero-video'), fallback = document.getElementById('hero-fallback');
         video.addEventListener('error', () => video.style.display = 'none');
         video.addEventListener('loadeddata', () => fallback.style.display = 'none');
         if (!video.src || video.src === window.location.href) fallback.style.display = 'block';
 
-        // ─── ACCORDION ─────────────────────────────────────────────────────
+        // ─── ACCORDION ────────────────────────────────────────────────────
         document.querySelectorAll('[data-accordion]').forEach(item => {
             item.querySelector('.accordion-header').addEventListener('click', () => {
                 const was = item.classList.contains('open');
@@ -3551,7 +3841,7 @@
             });
         });
 
-        // ─── SMOOTH SCROLL ─────────────────────────────────────────────────
+        // ─── SMOOTH SCROLL ────────────────────────────────────────────────
         document.querySelectorAll('a[href^="#"]').forEach(a => {
             a.addEventListener('click', e => {
                 const t = document.querySelector(a.getAttribute('href'));
@@ -3561,43 +3851,34 @@
         });
         document.getElementById('scroll-indicator').addEventListener('click', () => document.querySelector('#about').scrollIntoView({ behavior: 'smooth' }));
 
-        // ─── FORM ──────────────────────────────────────────────────────────
+        // ─── FORM ─────────────────────────────────────────────────────────
         document.getElementById('contact-form').addEventListener('submit', e => {
             e.preventDefault(); const btn = e.target.querySelector('.form-submit');
             btn.textContent = 'Message Sent ✓'; btn.style.background = '#1a5e3a';
             setTimeout(() => { btn.textContent = 'Send Request'; btn.style.background = ''; }, 3000);
         });
 
-        // ─── GSAP ──────────────────────────────────────────────────────────
-        gsap.registerPlugin(ScrollTrigger);
-        gsap.timeline({ delay: .2 })
-            .to('.hero-headline', { opacity: 1, y: 0, duration: .9, ease: 'power3.out' })
-            .to('.hero-logo-wrap', { opacity: 1, duration: .8, ease: 'power3.out' }, '-=0.5')
-            .to('.hero-sub-row', { opacity: 1, y: 0, duration: .6, ease: 'power3.out' }, '-=0.4')
-            .to('.hero-bottom', { opacity: 1, y: 0, duration: .8, ease: 'power3.out' }, '-=0.4')
-            .to('#scroll-indicator', { opacity: 1, duration: .6 }, '-=0.2');
-        gsap.to('#hero-video, #hero-fallback', { yPercent: 25, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
-        gsap.to('.hero-content', { opacity: 0, y: -60, ease: 'none', scrollTrigger: { trigger: '#hero', start: '30% top', end: '80% top', scrub: true } });
-        gsap.utils.toArray('.reveal').forEach(el => gsap.to(el, { opacity: 1, y: 0, duration: .8, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' } }));
-        gsap.utils.toArray('.reveal-left').forEach(el => gsap.to(el, { opacity: 1, x: 0, duration: .9, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' } }));
-        gsap.utils.toArray('.reveal-right').forEach(el => gsap.to(el, { opacity: 1, x: 0, duration: .9, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' } }));
-        gsap.utils.toArray('.bento-card').forEach((c, i) => ScrollTrigger.create({ trigger: c, start: 'top 90%', onEnter: () => gsap.to(c, { opacity: 1, y: 0, scale: 1, duration: .6, delay: i * .08, ease: 'power3.out' }) }));
-        gsap.utils.toArray('.accordion-item').forEach((item, i) => ScrollTrigger.create({ trigger: item, start: 'top 92%', onEnter: () => gsap.to(item, { opacity: 1, y: 0, duration: .5, delay: i * .1, ease: 'power3.out' }) }));
-        const navLinks = document.querySelectorAll('.nav-links a');
-        window.addEventListener('scroll', () => { let cur = ''; document.querySelectorAll('section[id]').forEach(s => { if (window.scrollY >= s.offsetTop - 130) cur = s.id; }); navLinks.forEach(a => a.style.fontWeight = a.getAttribute('href') === '#' + cur ? '800' : '600'); });
+        // ─── GSAP — called after preloader dismisses ──────────────────────
+        function initGSAP() {
+            gsap.registerPlugin(ScrollTrigger);
+            gsap.timeline({ delay: .1 })
+                .to('.hero-headline', { opacity: 1, y: 0, duration: .9, ease: 'power3.out' })
+                .to('.hero-logo-wrap', { opacity: 1, duration: .8, ease: 'power3.out' }, '-=0.5')
+                .to('.hero-sub-row', { opacity: 1, y: 0, duration: .6, ease: 'power3.out' }, '-=0.4')
+                .to('.hero-bottom', { opacity: 1, y: 0, duration: .8, ease: 'power3.out' }, '-=0.4')
+                .to('#scroll-indicator', { opacity: 1, duration: .6 }, '-=0.2');
+            gsap.to('#hero-video, #hero-fallback', { yPercent: 25, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
+            gsap.to('.hero-content', { opacity: 0, y: -60, ease: 'none', scrollTrigger: { trigger: '#hero', start: '30% top', end: '80% top', scrub: true } });
+            gsap.utils.toArray('.reveal').forEach(el => gsap.to(el, { opacity: 1, y: 0, duration: .8, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' } }));
+            gsap.utils.toArray('.reveal-left').forEach(el => gsap.to(el, { opacity: 1, x: 0, duration: .9, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' } }));
+            gsap.utils.toArray('.reveal-right').forEach(el => gsap.to(el, { opacity: 1, x: 0, duration: .9, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' } }));
+            gsap.utils.toArray('.bento-card').forEach((c, i) => ScrollTrigger.create({ trigger: c, start: 'top 90%', onEnter: () => gsap.to(c, { opacity: 1, y: 0, scale: 1, duration: .6, delay: i * .08, ease: 'power3.out' }) }));
+            gsap.utils.toArray('.accordion-item').forEach((item, i) => ScrollTrigger.create({ trigger: item, start: 'top 92%', onEnter: () => gsap.to(item, { opacity: 1, y: 0, duration: .5, delay: i * .1, ease: 'power3.out' }) }));
+            const navLinks = document.querySelectorAll('.nav-links a');
+            window.addEventListener('scroll', () => { let cur = ''; document.querySelectorAll('section[id]').forEach(s => { if (window.scrollY >= s.offsetTop - 130) cur = s.id; }); navLinks.forEach(a => a.style.fontWeight = a.getAttribute('href') === '#' + cur ? '800' : '600'); });
+        }
     </script>
 
-    <!-- THE PRESENCE — Designer Credit Footer -->
-    <div id="presence-credit">
-        <div class="presence-inner">
-            <span class="presence-text">© 2026 All rights reserved. Designed &amp; Developed by</span>
-            <a href="https://thepresence.com" target="_blank" class="presence-link"
-                title="Designed & Developed by THE PRESENCE">
-                <img src="./assets/ThePresence.png" alt="The Presence" class="presence-logo">
-                <span class="presence-brand">The Presence</span>
-            </a>
-        </div>
-    </div>
 </body>
 
 </html>
