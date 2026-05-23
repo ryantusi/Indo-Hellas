@@ -284,11 +284,13 @@ body.on-dark #cursor-ring {
     .container {
         padding: 0 20px
     }
+}
 
+@media(max-width:835px) {
     #cursor,
-    #cursor-ring {
-        display: none
-    }
+        #cursor-ring {
+            display: none
+        }
 }
 
 #progress {
@@ -550,7 +552,7 @@ body.on-dark #cursor-ring {
     color: var(--blue-pale)
 }
 
-@media(max-width:768px) {
+@media(max-width:835px) {
 
     .nav-links,
     .nav-cta {
@@ -805,7 +807,7 @@ body.on-dark #cursor-ring {
 
 @media(max-width:500px) {
     .scroll-indicator {
-        bottom: 54%
+        bottom: 40%
     }
 }
 
@@ -818,12 +820,6 @@ body.on-dark #cursor-ring {
     display: flex;
     flex-direction: column;
     gap: 16px
-}
-
-@media(max-width:1024px) {
-    .fab-container {
-        display: none
-    }
 }
 
 .fab {
@@ -873,6 +869,31 @@ body.on-dark #cursor-ring {
 .fab:hover .fab-icon {
     background: var(--blue-accent);
     color: #fff
+}
+
+@media(max-width:835px) {
+    .fab-container {
+        bottom: 20vh
+    }
+}
+
+@media(max-width:500px) {
+    .fab-container {
+        bottom: 45vh;
+    }
+
+    .fab-label {
+        display: none;
+    }
+
+    .fab-icon {
+        width: 28px;
+        height: 28px;
+    }
+
+    .fab-icon span{
+        font-size: 20px;
+    }
 }
 
 /* MODAL */
@@ -2765,7 +2786,7 @@ footer {
     .presence-text {
         color: var(--text-muted);
         letter-spacing: 0.1em;
-        font-size: 10px;
+        font-size: 9px;
         white-space: normal;
         text-align: center
     }
