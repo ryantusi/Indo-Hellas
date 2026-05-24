@@ -1,0 +1,26 @@
+{
+  "name": "Indo Hellas General Marine Suppliers",
+  "short_name": "Indo Hellas",
+  "description": "Global ship chandler and marine supplier based in Chennai, India. Serving vessels worldwide since 1996.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a1628",
+  "theme_color": "#0a1628",
+  "lang": "en-IN",
+  "icons": [
+    {
+      "src": "./assets/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./assets/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "logistics", "shipping", "marine", "supplier", "chandler"],
+  "orientation": "portrait-primary"
+}
